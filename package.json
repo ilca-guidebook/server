@@ -5,9 +5,10 @@
   "author": "Nitzan Ben Ner <nitzanbenner@gmail.com>",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon -V -L ./ --exec 'node'"
+    "start": "nodemon -r esm server.js"
   },
   "dependencies": {
+    "esm": "^3.2.25",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.27",
