@@ -1,10 +1,10 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const SectorSchema = new mongoose.Schema({
     name: { type: String },
     description: { type: String },
     routes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Route' }],
-    image: { type: String },
+    imageUrl: { type: String },
 });
 
-module.exports = mongoose.model('Sector', SectorSchema);
+export default mongoose.model('Sector', SectorSchema);
