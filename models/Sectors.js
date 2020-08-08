@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const SectorSchema = new mongoose.Schema({
     name: { type: String },
@@ -7,4 +7,4 @@ const SectorSchema = new mongoose.Schema({
     imageUrl: { type: String },
 });
 
-module.exports = mongoose.model('Sector', SectorSchema);
+export default mongoose.model('Sector', SectorSchema);

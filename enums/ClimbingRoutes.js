@@ -1,4 +1,4 @@
-const grades = [
+export const grades = [
     '4',
     '4+',
     '5',
@@ -29,10 +29,8 @@ const grades = [
     '9c+',
 ];
 
-const routeTypes = [
+export const routeTypes = [
     'Trad',
     'Sport',
     'Boulder',
-]
-
-modules.exports = { routeTypes, grades };
+];

@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const { grades, routeTypes } = require('../enums/ClimbingRoutes');
+import mongoose from 'mongoose';
+import { grades, routeTypes } from '../enums/ClimbingRoutes';
 
 const ClimbingRouteSchema = new mongoose.Schema({
     name: { type: String },
@@ -15,4 +15,4 @@ const ClimbingRouteSchema = new mongoose.Schema({
     },
 });
 
-module.exports = mongoose.model('ClimbingRoute', ClimbingRouteSchema);
+export default mongoose.model('ClimbingRoute', ClimbingRouteSchema);
