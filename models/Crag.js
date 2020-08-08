@@ -8,7 +8,7 @@ const CragSchema = new mongoose.Schema({
         lt: { type: Number },
         wazeLink: { type: String },
     },
-    image: { type: String },
+    imageUrl: { type: String },
     sectors: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Sector' }],
     routes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Route' }],
 });
