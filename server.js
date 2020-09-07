@@ -1,6 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
+import dotenv from 'dotenv';
 
 import ClimbingRoutes from './routes/ClimbingRoutes';
 import Users from './routes/Users';
@@ -9,13 +10,13 @@ import Sectors from './routes/Sectors';
 
 // Constants
 const PORT = 3000;
-const HOST = 'localhost';
 
 // App
+dotenv.config();
 const app = express();
 app.use(bodyParser.json());
 
-mongoose.connect(process.env.MONGO_CONNECTION || 'mongodb://localhost:27017/database', {
+mongoose.connect(process.env.MONGO_CONNECTION, {
   useNewUrlParser: true,
   useCreateIndex: true,
   useFindAndModify: false,
@@ -35,4 +36,4 @@ app.use('/crags', Crags);
 app.use('/sectors', Sectors);
 
 app.listen(PORT);
-console.log(`Running on http://${HOST}:${PORT}`);
+console.log(`Up and running`);
