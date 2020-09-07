@@ -1,4 +1,8 @@
-const express = require('express');
+import express from 'express';
+import bodyParser from 'body-parser';
+import mongoose from 'mongoose';
+
+import ClimbingRoutes from './routes/ClimbingRoutes';
 
 // Constants
 const PORT = 3000;
@@ -6,9 +10,23 @@ const HOST = 'localhost';
 
 // App
 const app = express();
+app.use(bodyParser.json());
+
+mongoose.connect(process.env.MONGO_CONNECTION || 'mongodb://localhost:27017/database', {
+  useNewUrlParser: true,
+  useCreateIndex: true,
+  useFindAndModify: false,
+});
+
+// Debug Mongoose
+// mongoose.set('debug', true);
+mongoose.Promise = global.Promise; // Use native promises as mongoose promises
+
 app.get('/', (req, res) => {
   res.send('Hello World');
 });
 
-app.listen(PORT, HOST);
+app.use('/climbingroutes', ClimbingRoutes);
+
+app.listen(PORT);
 console.log(`Running on http://${HOST}:${PORT}`);
