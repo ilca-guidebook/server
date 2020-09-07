@@ -3,6 +3,9 @@ import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 
 import ClimbingRoutes from './routes/ClimbingRoutes';
+import Users from './routes/Users';
+import Crags from './routes/Crags';
+import Sectors from './routes/Sectors';
 
 // Constants
 const PORT = 3000;
@@ -27,6 +30,9 @@ app.get('/', (req, res) => {
 });
 
 app.use('/climbingroutes', ClimbingRoutes);
+app.use('/users', Users);
+app.use('/crags', Crags);
+app.use('/sectors', Sectors);
 
 app.listen(PORT);
 console.log(`Running on http://${HOST}:${PORT}`);
