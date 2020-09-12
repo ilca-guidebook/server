@@ -1,5 +1,5 @@
 import express from 'express';
-import SectorModel from '../models/Crag';
+import SectorModel from '../models/Sector';
 
 const router = express.Router();
 
