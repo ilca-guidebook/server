@@ -16,7 +16,7 @@ services:
     expose:
       - 27017
     ports:
-    - 30000:27017
+    - 27017:27017
     volumes:
       - ../data/db:/data/db_docker
     command: --bind_ip_all
