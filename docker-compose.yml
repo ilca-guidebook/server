@@ -9,9 +9,6 @@ services:
       - /usr/app/node_modules
     depends_on:
       - mongo
-    environment:
-      MONGO_CONNECTION: mongodb://mongo:27017/ilcadb
-      MONGO_CONNECTION_TEST: mongodb://mongo:27017/
     ports:
       - 3000:3000
   mongo:
