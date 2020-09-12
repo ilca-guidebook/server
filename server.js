@@ -1,5 +1,4 @@
 import express from 'express';
-import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 
@@ -14,7 +13,7 @@ const PORT = 3000;
 // App
 dotenv.config();
 const app = express();
-app.use(bodyParser.json());
+app.use(express.json());
 
 mongoose.connect(process.env.MONGO_CONNECTION, {
   useNewUrlParser: true,
