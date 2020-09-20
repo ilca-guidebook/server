@@ -1,88 +1,22 @@
-import bcrypt from 'bcrypt';
 import passport from 'passport';
-import { Strategy as localStrategy } from 'passport-local';
-import { Strategy as JWTStrategy, ExtractJwt } from 'passport-jwt';
-import User from '../models/User';
+import LocalStrategy from 'passport-local';
 
-const jwtSecret = process.env.JWT_SECRET;
+import UserModel from '../models/User';
 
-const BCRYPT_SALT_ROUNDS = 12;
+passport.use(new LocalStrategy({
+    usernameField: 'email',
+    passwordField: 'password',
+}, async (email, password, done) => {
+    try {
+        const user = await UserModel.findOne({ 'email.address': email }).exec();
+        const passwordValidated = await user.validatePassword(password);
 
-passport.use(
-    'register',
-    new localStrategy({
-        usernameField: 'username',
-        passwordField: 'password',
-        session: false,
-    },
-    async (username, password, done) => {
-        try {
-            const checkUser = await User.findOne({ username }).exec();
-            if (checkUser) {
-                console.log('username already taken');
-                return done(null, false, { message: 'username already taken' });
-            }
-
-            const hashedPassword = await bcrypt.hash(password, BCRYPT_SALT_ROUNDS);
-            const user = await new User({ username, password: hashedPassword }).save();
-
-            console.log('User created');
-            return done(null, user);
-        } catch (e) {
-            done(e);
+        if(!user || !passwordValidated) {
+            return done(null, false, { errors: { 'email or password': 'is invalid' } });
         }
-    }),
-);
 
-passport.use(
-    'login',
-    new localStrategy({
-        usernameField: 'username',
-        passwordField: 'password',
-        session: false,
-    },
-    async (username, password, done) => {
-        try {
-            const user = await User.findOne({ username }).exec();
-            if (!user) {
-                console.log('bad username');
-                return done(null, false, { message: 'bad username' });
-            }
-
-            const passwordCheck = await bcrypt.compare(password, user.password);
-            if (!passwordCheck) {
-                console.log('Passwords do not match');
-                return done(null, false, { message: 'Passwords do not match' });
-            }
-
-            console.log('user authenticated');
-            return done(null, user);
-        } catch (e) {
-            done(e);
-        }
-    }),
-);
-
-const opts = {
-    jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme('JTW'),
-    secretOrKey: jwtSecret,
-}
-
-passport.use(
-    'jwt',
-    new JWTStrategy(opts, async (jwtPayload, done) => {
-        try {
-            const user = await User.findOne({ username: jwtPayload.id }).exec();
-
-            if (!user) {
-                console.log('user not found in DB');
-                done(null, false);
-            } else {
-                console.log('user found in DB');
-                done(null, user);
-            }
-        } catch (e) {
-            done(e);
-        }
-    }),
-);
+        return done(null, user);
+    } catch (err) {
+        return done(err);
+    }
+}));
