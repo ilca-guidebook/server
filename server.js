@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import passport from 'passport';
 
 import './config/passport';
+import auth from './routes/auth';
 
 import ClimbingRoutes from './routes/ClimbingRoutes';
 import User from './routes/User';
@@ -16,6 +17,9 @@ const PORT = process.env.PORT || 3000;
 const app = express();
 app.use(express.json());
 app.use(passport.initialize());
+
+// JWT
+app.use(auth.required.unless({ path: ['/user/register', '/user/login'] }));
 
 mongoose.connect(process.env.MONGO_CONNECTION, {
   useNewUrlParser: true,

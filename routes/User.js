@@ -2,11 +2,10 @@ import express from 'express';
 import passport from 'passport';
 
 import UserModel from '../models/User';
-import auth from './auth';
 
 const router = express.Router();
 
-router.post('/register', auth.optional, async (req, res, next) => {
+router.post('/register', async (req, res, next) => {
     const { body: { email, password, firstName, lastName, phone } } = req;
 
     const existingUser = await UserModel.findOne({ 'email.address': email }).exec();
@@ -39,7 +38,7 @@ router.post('/register', auth.optional, async (req, res, next) => {
     return res.json({ user: finalUser.toAuthJSON() });
 });
 
-router.post('/login', auth.optional, (req, res, next) => {
+router.post('/login', (req, res, next) => {
     const { body: { email, password } } = req;
   
     if(!email) {
@@ -70,7 +69,7 @@ router.post('/login', auth.optional, (req, res, next) => {
     })(req, res, next);
 });
 
-router.get('/current', auth.required, async (req, res, next) => {
+router.get('/current', async (req, res, next) => {
     const { payload } = req;
     console.log('payload', payload);
     const user = await UserModel.findById(payload.id);
