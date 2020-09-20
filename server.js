@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 import passport from 'passport';
 
 import './config/passport';
-import auth from './routes/auth';
+import auth from './middleware/express/auth';
 
 import ClimbingRoutes from './routes/ClimbingRoutes';
 import User from './routes/User';

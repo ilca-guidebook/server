@@ -1,5 +1,7 @@
 import express from 'express';
+
 import CragModel from '../models/Crag';
+import permissions from '../middleware/express/permissions';
 
 const router = express.Router();
 
@@ -9,15 +11,17 @@ router.get('/', async (req, res) => {
     return res.json({ crags });
 });
 
-router.post('/', async (req, res) => {
-    const { data } = req.body;
+router.post('/', permissions.write, async (req, res) => {
+    const { body: { data } } = req;
+
     const crag = await new CragModel({ ...data }).save();
 
     return res.json({ crag });
 });
 
-router.put('/', async (req, res) => {
-    const { data } = req.body;
+router.put('/', permissions.write, async (req, res) => {
+    const { body: { data } } = req;
+
     const crag = await CragModel.findOneAndUpdate(
         { _id: data._id },
         { ...data },

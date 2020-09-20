@@ -20,7 +20,11 @@ const UserSchema = new mongoose.Schema({
         isVerified: { type: Boolean },
         number: { type: String },
     },
-    role: { type: String, enum: roles },
+    role: {
+        type: String,
+        enum: Object.values(roles),
+        default: roles.CLIMBER,
+    },
 });
 
 UserSchema.methods.setPassword = async function(password) {

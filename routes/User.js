@@ -70,9 +70,8 @@ router.post('/login', (req, res, next) => {
 });
 
 router.get('/current', async (req, res, next) => {
-    const { payload } = req;
-    console.log('payload', payload);
-    const user = await UserModel.findById(payload.id);
+    const { user: { id } } = req;
+    const user = await UserModel.findById(id);
 
     if (!user) {
         return res.sendStatus(400);
