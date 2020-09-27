@@ -1,12 +1,14 @@
 import express from 'express';
-import passport from 'passport';
 
 import UserModel from '../models/User';
 
 const router = express.Router();
 
+const CODE_LENGTH = 900000 - 1; // 6 DIGIT NUMBER BETWEEN 0 TO 900000
+const ADD_TO_CODE = 100000;
+
 router.post('/register', async (req, res, next) => {
-    const { body: { email, password, firstName, lastName, phone } } = req;
+    const { body: { email, firstName, lastName, phone } } = req;
 
     const existingUser = await UserModel.findOne({ 'email.address': email }).exec();
     if (existingUser) {
@@ -19,57 +21,60 @@ router.post('/register', async (req, res, next) => {
         });
     }
 
-    if(!password) {
-        return res.status(422).json({
-            errors: { password: 'is required' },
-        });
-    }
-
     const finalUser = new UserModel({
         email: { address: email },
         phone: { number: phone },
-        password,
         name: { first: firstName, last: lastName },
     });
+   
+    const code = `${Math.floor(ADD_TO_CODE + Math.random() * CODE_LENGTH)}`;
+    console.log('code', code);
 
-    await finalUser.setPassword(password);
+    await finalUser.setAuthCode(code);
     await finalUser.save();
 
-    return res.json({ user: finalUser.toAuthJSON() });
+    return res.json({ user: finalUser.toJSON() });
 });
 
-router.post('/login', (req, res, next) => {
-    const { body: { email, password } } = req;
+router.post('/login', async (req, res) => {
+    const { body: { email } } = req;
   
     if(!email) {
         return res.status(422).json({
             errors: { email: 'is required' },
         });
     }
+
+    const user = await UserModel.findOne({ 'email.address': email }).exec();
   
-    if(!password) {
-      return res.status(422).json({
-            errors: { password: 'is required' },
-      });
+    if(user) {
+        const code = `${Math.floor(ADD_TO_CODE + Math.random() * CODE_LENGTH)}`;
+        console.log('code', code);
+
+        await user.setAuthCode(code);
+        await user.save();
+
+        return res.json({ user: user.toJSON() });
     }
-  
-    return passport.authenticate('local', { session: false }, (err, passportUser, info) => {
-        if(err) {
-            return next(err);
-        }
-  
-        if(passportUser) {
-            const user = passportUser;
-            user.token = passportUser.generateJWT();
-    
-            return res.json({ user: user.toAuthJSON() });
-        }
-  
-        return res.sendStatus(400);
-    })(req, res, next);
+
+    return res.sendStatus(400);
 });
 
-router.get('/current', async (req, res, next) => {
+router.get('/validateAuthCode', async (req, res) => {
+    const { query: { email, code } } = req;
+
+    const user = await UserModel.findOne({ 'email.address': email }).exec();
+    const codeValidated = await user.validateAuthCode(code);
+
+    if (!codeValidated) {
+        return res.sendStatus(401);
+    }
+
+    res.append('token', user.generateJWT());
+    return res.json({ user: user.toJSON() });
+});
+
+router.get('/me', async (req, res, next) => {
     const { user: { id } } = req;
     const user = await UserModel.findById(id);
 
@@ -77,7 +82,7 @@ router.get('/current', async (req, res, next) => {
         return res.sendStatus(400);
     }
 
-    return res.json({ user: user.toAuthJSON() });
+    return res.json({ user: user.toJSON() });
 });
 
 export default router;

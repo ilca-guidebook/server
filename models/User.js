@@ -7,7 +7,6 @@ import { roles } from '../enums/Users';
 const BCRYPT_SALT_ROUNDS = 12;
 
 const UserSchema = new mongoose.Schema({
-    password: { type: String },
     name: {
         first: { type: String },
         last: { type: String },
@@ -25,14 +24,15 @@ const UserSchema = new mongoose.Schema({
         enum: Object.values(roles),
         default: roles.CLIMBER,
     },
+    authCode: { type: String },
 });
 
-UserSchema.methods.setPassword = async function(password) {
-    this.password = await bcrypt.hash(password, BCRYPT_SALT_ROUNDS);
+UserSchema.methods.setAuthCode = async function(code) {
+    this.authCode = await bcrypt.hash(code, BCRYPT_SALT_ROUNDS);
 };
   
-UserSchema.methods.validatePassword = async function(password) {
-    return await bcrypt.compare(password, this.password);
+UserSchema.methods.validateAuthCode = async function(code) {
+    return await bcrypt.compare(code, this.authCode);
 };
   
 UserSchema.methods.generateJWT = function() {
@@ -46,14 +46,12 @@ UserSchema.methods.generateJWT = function() {
         exp: parseInt(expirationDate.getTime() / 1000, 10),
     }, process.env.JWT_SECRET);
 };
-  
-UserSchema.methods.toAuthJSON = function() {
+
+UserSchema.methods.toJSON = function() {
     return {
         _id: this._id,
-        token: this.generateJWT(),
         name: this.name,
         email: this.email,
-        phone: this.phone,
     };
 };
 

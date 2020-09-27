@@ -14,7 +14,7 @@ router.get('/', async (req, res) => {
 router.post('/', permissions.write, async (req, res) => {
     const { body: { data } } = req;
 
-    const climbingRoute = await new ClimbingRouteModel({ ...data }).save();
+    const climbingRoute = await new ClimbingRouteModel(data).save();
 
     return res.json({ climbingRoute });
 });
