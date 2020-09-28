@@ -1,6 +1,5 @@
 import express from 'express';
 import mongoose from 'mongoose';
-import passport from 'passport';
 
 import auth from './middleware/express/auth';
 
@@ -15,7 +14,6 @@ const PORT = process.env.PORT || 3000;
 // App
 const app = express();
 app.use(express.json());
-app.use(passport.initialize());
 
 // JWT
 app.use(auth.required.unless({

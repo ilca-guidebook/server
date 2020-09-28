@@ -8,6 +8,7 @@
     "start": "nodemon -r esm -r dotenv/config server.js"
   },
   "dependencies": {
+    "@sendgrid/mail": "^7.2.6",
     "bcrypt": "^5.0.0",
     "dotenv": "^8.2.0",
     "esm": "^3.2.25",

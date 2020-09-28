@@ -1,6 +1,7 @@
 import express from 'express';
 
 import UserModel from '../models/User';
+import { sendAuthCodeEmail } from '../services/sendgrid';
 
 const router = express.Router();
 
@@ -21,19 +22,23 @@ router.post('/register', async (req, res, next) => {
         });
     }
 
-    const finalUser = new UserModel({
+    const user = new UserModel({
         email: { address: email },
         phone: { number: phone },
         name: { first: firstName, last: lastName },
     });
    
     const code = `${Math.floor(ADD_TO_CODE + Math.random() * CODE_LENGTH)}`;
-    console.log('code', code);
+    await sendAuthCodeEmail(email, code);
+    
+    if (process.env.ENVIRONMENT === 'dev') {
+        console.log('code', code);
+    }
 
-    await finalUser.setAuthCode(code);
-    await finalUser.save();
+    await user.setAuthCode(code);
+    await user.save();
 
-    return res.json({ user: finalUser.toJSON() });
+    return res.json({ user: user.toJSON() });
 });
 
 router.post('/login', async (req, res) => {
@@ -49,7 +54,10 @@ router.post('/login', async (req, res) => {
   
     if(user) {
         const code = `${Math.floor(ADD_TO_CODE + Math.random() * CODE_LENGTH)}`;
-        console.log('code', code);
+        await sendAuthCodeEmail(email, code);
+        if (process.env.ENVIRONMENT === 'dev') {
+            console.log('code', code);
+        }
 
         await user.setAuthCode(code);
         await user.save();
