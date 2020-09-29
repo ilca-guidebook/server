@@ -14,7 +14,8 @@ router.get('/', async (req, res) => {
 router.post('/', permissions.write, async (req, res) => {
     const { body: { data } } = req;
 
-    const sector = await new SectorModel({ ...data }).save();
+    const sector = new SectorModel(data);
+    await sector.save();
 
     return res.json({ sector });
 });

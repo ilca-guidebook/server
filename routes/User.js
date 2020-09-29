@@ -1,12 +1,10 @@
 import express from 'express';
 
 import UserModel from '../models/User';
-import { sendAuthCodeEmail } from '../services/sendgrid';
+import { sendAuthCodeEmail } from '../helpers/sendgrid';
+import { generateAuthCode } from '../helpers/user';
 
 const router = express.Router();
-
-const CODE_LENGTH = 900000 - 1; // 6 DIGIT NUMBER BETWEEN 0 TO 900000
-const ADD_TO_CODE = 100000;
 
 router.post('/register', async (req, res, next) => {
     const { body: { email, firstName, lastName, phone } } = req;
@@ -28,7 +26,7 @@ router.post('/register', async (req, res, next) => {
         name: { first: firstName, last: lastName },
     });
    
-    const code = `${Math.floor(ADD_TO_CODE + Math.random() * CODE_LENGTH)}`;
+    const code = generateAuthCode();
     await sendAuthCodeEmail(email, code);
     
     if (process.env.ENVIRONMENT === 'dev') {
@@ -53,7 +51,7 @@ router.post('/login', async (req, res) => {
     const user = await UserModel.findOne({ 'email.address': email }).exec();
   
     if(user) {
-        const code = `${Math.floor(ADD_TO_CODE + Math.random() * CODE_LENGTH)}`;
+        const code = generateAuthCode();
         await sendAuthCodeEmail(email, code);
         if (process.env.ENVIRONMENT === 'dev') {
             console.log('code', code);
