@@ -1,9 +1,9 @@
 import sendgrid from '@sendgrid/mail';
 sendgrid.setApiKey(process.env.SENDGRID_API_KEY);
 
-const FROM = 'nitzanbenner@gmail.com';
+const FROM = process.env.SENGRID_FROM;
 const TEMPLATES = {
-    AUTH_CODE: 'd-b02aa43019204ad0acaa894e97b48808',
+    AUTH_CODE: process.env.SENDGRID_AUTH_CODE_TEMPLATE,
 };
 
 export const sendAuthCodeEmail = async (to, code) => {
