@@ -17,13 +17,6 @@ const auth = {
         getToken: getTokenFromHeaders,
         algorithms: ['HS256'],
     }),
-    optional: jwt({
-        secret: process.env.JWT_SECRET,
-        userProperty: 'user',
-        getToken: getTokenFromHeaders,
-        credentialsRequired: false,
-        algorithms: ['HS256'],
-    }),
 };
 
 export default auth;

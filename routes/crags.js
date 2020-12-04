@@ -14,7 +14,8 @@ router.get('/', async (req, res) => {
 router.post('/', permissions.write, async (req, res) => {
     const { body: { data } } = req;
 
-    const crag = await new CragModel({ ...data }).save();
+    const crag = new CragModel(data);
+    await crag.save();
 
     return res.json({ crag });
 });
