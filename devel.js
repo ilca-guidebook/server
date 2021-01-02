@@ -6,7 +6,8 @@ import ClimbingRouteModel from './models/ClimbingRoute';
 
 import beitArya from './mockData/beitArye.json';
 import beitOren from './mockData/beitOren.json';
-import gita from './mockData/gita.json';
+import gitaEast from './mockData/gitaEast.json';
+import gitaWest from './mockData/gitaWest.json';
 import nahalTamar from './mockData/NahalTamar.json';
 import yonim from './mockData/yonim.json';
 import zanuah from './mockData/Zanuah.json';
@@ -38,22 +39,21 @@ const connectDB = () => {
 };
 
 const importData = async () => {
-    const crags = [beitArya];
-
-    const sectorsIds = [];
-    const routesIds = [];
+    const crags = [beitArya, beitOren, gitaEast, gitaWest, nahalTamar, yonim, zanuah];
 
     for (let i = 0; i < crags.length; i++) {
         const { name, description, access, sectors } = crags[i];
+        const sectorsIds = [];
 
         if (sectors) {
             for (let j = 0; j < sectors.length; j++) {
                 const { name, routes, description } = sectors[j];
+                const routesIds = [];
 
                 if (routes) {
                     for (let k = 0; k < routes.length; k++) {
                         const { name, grade, type, setBy, bolts, stars = 0 } = routes[k];
-    
+
                         const r = await new ClimbingRouteModel({
                             name,
                             description: '',
@@ -90,6 +90,7 @@ try {
     switch (command) {
         case 'importData':
             importData();
+            console.log('done importing data');
             break;
         default:
             console.warn('Could not determine what to do');
