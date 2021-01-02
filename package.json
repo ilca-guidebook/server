@@ -6,7 +6,7 @@
   "main": "server.js",
   "scripts": {
     "start": "nodemon -r esm -r dotenv/config server.js",
-    "devel": "node -r esm ./devel.js"
+    "devel": "node -r esm -r dotenv/config ./devel.js"
   },
   "dependencies": {
     "@sendgrid/mail": "^7.2.6",

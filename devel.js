@@ -1,3 +1,5 @@
+import mongoose from 'mongoose';
+
 import CragModel from './models/Crag';
 import SectorModel from './models/Sector';
 import ClimbingRouteModel from './models/ClimbingRoute';
@@ -9,43 +11,83 @@ import nahalTamar from './mockData/NahalTamar.json';
 import yonim from './mockData/yonim.json';
 import zanuah from './mockData/Zanuah.json';
 
-const importData = () => {
-    const crags = [beitArya, beitOren, gita, nahalTamar, yonim, zanuah];
+const argsToObject = (args) => {
+    const obj = {};
 
-    const cragsPromises = [];
-    const sectorsPromises = [];
+    args.forEach((item) => {
+        const splitted = item.split(':');
 
-    crags.forEach((crag) => {
-        const { name, description, access, subCrags, sectors } = crag;
+        if (splitted[0] && splitted[1]) {
+            obj[splitted[0]] = splitted[1];
+        }
+    });
+
+    return obj;
+}
+
+const connectDB = () => {
+    mongoose.connect(process.env.MONGO_CONNECTION, {
+        useNewUrlParser: true,
+        useCreateIndex: true,
+        useFindAndModify: false,
+      });
+      
+      // Debug Mongoose
+      // mongoose.set('debug', true);
+      mongoose.Promise = global.Promise; // Use native promises as mongoose promises
+};
+
+const importData = async () => {
+    const crags = [beitArya];
+
+    const sectorsIds = [];
+    const routesIds = [];
+
+    for (let i = 0; i < crags.length; i++) {
+        const { name, description, access, sectors } = crags[i];
 
         if (sectors) {
-            sectors.forEach((sector) => {
-                const { name, routes, description } = sector;
+            for (let j = 0; j < sectors.length; j++) {
+                const { name, routes, description } = sectors[j];
 
                 if (routes) {
-                    const routesIds = [];
-
-                    routes.forEach(async (climbingRoute) => {
-                        const { name, grade, type, setBy, bolts, stars = 0 } = climbingRoute;
-
-                        routesIds.push(await new ClimbingRouteModel({
+                    for (let k = 0; k < routes.length; k++) {
+                        const { name, grade, type, setBy, bolts, stars = 0 } = routes[k];
+    
+                        const r = await new ClimbingRouteModel({
                             name,
                             description: '',
                             metaData: { grade, type, setBy, bolts, stars },
-                        }).save());
-                    });
-
-                    console.log(routesIds);
+                        }).save();
+                        routesIds.push(r._id);
+                    }
                 }
-            });
+
+                const sect = await new SectorModel({
+                    name,
+                    description,
+                    routes: routesIds.map(item => item._id),
+                }).save();
+                sectorsIds.push(sect._id);
+            }
         }
-    });
+
+        await new CragModel({
+            name,
+            description,
+            location: { description: access },
+            sectors: sectorsIds.map(item => item._id),
+        }).save();
+    }
 };
 
 try {
-    const args = process.argv;
-    console.log('args', args);
-    switch (args[2]) {
+    console.log(process.argv);
+    const { command } = argsToObject(process.argv);
+
+    connectDB();
+
+    switch (command) {
         case 'importData':
             importData();
             break;
