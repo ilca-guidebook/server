@@ -7,9 +7,15 @@ const CragSchema = new mongoose.Schema({
         lng: { type: Number },
         lt: { type: Number },
         wazeLink: { type: String },
+        description: { type: String },
     },
     imageUrl: { type: String },
     sectors: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Sector' }],
+    subCrags: {
+        name: { type: String },
+        sectors: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Sector' }],
+        routes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Routes' }],
+    },
     routes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Route' }],
 });
 
