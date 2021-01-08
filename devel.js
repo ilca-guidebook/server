@@ -12,6 +12,12 @@ import nahalTamar from './mockData/NahalTamar.json';
 import yonim from './mockData/yonim.json';
 import zanuah from './mockData/Zanuah.json';
 
+/**
+ * npm scripts should run as follow: npm run devel <command> <key>:<value>.
+ * This function splits the arguments and return an { key: value } object.
+ * @param {Array} args
+ * @returns {Object}
+ */
 const argsToObject = (args) => {
     const obj = {};
 
