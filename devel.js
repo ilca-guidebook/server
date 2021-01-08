@@ -45,7 +45,7 @@ const connectDB = () => {
 };
 
 const importData = async () => {
-    const crags = [beitArya];
+    const crags = [beitArya, beitOren, gitaEast, gitaWest, nahalTamar, yonim, zanuah];
     const cragsDocuments = [];
 
     for (let i = 0; i < crags.length; i++) {
