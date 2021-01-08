@@ -45,46 +45,49 @@ const connectDB = () => {
 };
 
 const importData = async () => {
-    const crags = [beitArya, beitOren, gitaEast, gitaWest, nahalTamar, yonim, zanuah];
+    const crags = [beitArya];
+    const cragsDocuments = [];
 
     for (let i = 0; i < crags.length; i++) {
         const { name, description, access, sectors } = crags[i];
-        const sectorsIds = [];
+        const sectorsDocuments = [];
 
         if (sectors) {
             for (let j = 0; j < sectors.length; j++) {
                 const { name, routes, description } = sectors[j];
-                const routesIds = [];
+                const routesDocuments = [];
 
                 if (routes) {
                     for (let k = 0; k < routes.length; k++) {
                         const { name, grade, type, setBy, bolts, stars = 0 } = routes[k];
 
-                        const r = await new ClimbingRouteModel({
+                        routesDocuments.push({
                             name,
                             description: '',
                             metaData: { grade, type, setBy, bolts, stars },
-                        }).save();
-                        routesIds.push(r._id);
+                        });
                     }
                 }
 
-                const sect = await new SectorModel({
+                const routesIds = (await ClimbingRouteModel.insertMany(routesDocuments)).map(item => item._id);
+                sectorsDocuments.push({
                     name,
                     description,
-                    routes: routesIds.map(item => item._id),
-                }).save();
-                sectorsIds.push(sect._id);
+                    routes: routesIds,
+                });
             }
         }
 
-        await new CragModel({
+        const sectorsIds = (await SectorModel.insertMany(sectorsDocuments)).map(item => item._id);
+        cragsDocuments.push({
             name,
             description,
             location: { description: access },
-            sectors: sectorsIds.map(item => item._id),
-        }).save();
+            sectors: sectorsIds,
+        });
     }
+
+    await CragModel.insertMany(cragsDocuments);
 };
 
 try {
