@@ -91,7 +91,6 @@ const importData = async () => {
 };
 
 try {
-    console.log(process.argv);
     const { command } = argsToObject(process.argv);
 
     connectDB();
