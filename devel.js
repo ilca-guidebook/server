@@ -5,6 +5,7 @@ import SectorModel from './models/Sector';
 import ClimbingRouteModel from './models/ClimbingRoute';
 
 import beitArya from './mockData/beitArye.json';
+import beitAryaBoulder from './mockData/beitAryeBoulder.json';
 import beitOren from './mockData/beitOren.json';
 import gitaEast from './mockData/gitaEast.json';
 import gitaWest from './mockData/gitaWest.json';
@@ -45,11 +46,11 @@ const connectDB = () => {
 };
 
 const importData = async () => {
-    const crags = [beitArya, beitOren, gitaEast, gitaWest, nahalTamar, yonim, zanuah];
+    const crags = [beitArya, beitAryaBoulder, beitOren, gitaEast, gitaWest, nahalTamar, yonim, zanuah];
     const cragsDocuments = [];
 
     for (let i = 0; i < crags.length; i++) {
-        const { name, description, access, sectors } = crags[i];
+        const { name, area, description, access, sectors } = crags[i];
         const sectorsDocuments = [];
 
         if (sectors) {
@@ -82,7 +83,7 @@ const importData = async () => {
         cragsDocuments.push({
             name,
             description,
-            location: { description: access },
+            location: { description: access, area },
             sectors: sectorsIds,
         });
     }

@@ -2,6 +2,7 @@
   "name": "Beit Arya",
   "description": "Decent crag with a variety of difficulties.",
   "access": "Beit Arye is an Israeli settlement in the occupied West Bank. As the crag (main wall) is within the fenced-off area of the settlement, you have to enter the settlement gates in order to reach it. If you leave a passport with the security guard he will give you a key to pass through the fence. Enter Beit Arye Settlement and ask locals how to get to the fence with the door that leads to the climbing area (main wall). Pass through and follow the trail first left and then right down to the cliff.",
+  "area": "Center",
   "sectors": [
     {
       "name": "The Cave",

@@ -1,6 +1,7 @@
 {
     "name": "Gita East",
     "description": "...",
+    "area": "North",
     "sectors": [
         {
         "name": "Hilton",
