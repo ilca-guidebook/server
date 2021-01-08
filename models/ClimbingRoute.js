@@ -7,11 +7,11 @@ const ClimbingRouteSchema = new mongoose.Schema({
     imageUrl: { type: String },
     metaData: {
         grade: { type: String, enum: grades },
+        routeType: { type: String, enum: routeTypes },
+        setBy: { type: String },
         bolts: { type: Number },
         height: { type: Number },
         firstAscent: { type: String },
-        bolter: { type: String },
-        routeType: { type: String, enum: routeTypes },
     },
 });
 
