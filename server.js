@@ -3,10 +3,10 @@ import mongoose from 'mongoose';
 
 import auth from './middleware/express/auth';
 
-import ClimbingRoutes from './routes/ClimbingRoutes';
-import User from './routes/User';
-import Crags from './routes/Crags';
-import Sectors from './routes/Sectors';
+import ClimbingRoutes from './routes/climbingRoutes';
+import User from './routes/user';
+import Crags from './routes/crags';
+import Sectors from './routes/sectors';
 
 // Constants
 const PORT = process.env.PORT || 3000;

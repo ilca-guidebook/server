@@ -14,9 +14,9 @@ services:
   mongo:
     image: mongo:4.2
     expose:
-      - 27017
+      - 27027
     ports:
-    - 27017:27017
+      - 27027:27017
     volumes:
       - ../data/db:/data/db_docker
     command: --bind_ip_all
