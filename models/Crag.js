@@ -1,9 +1,10 @@
 import mongoose from 'mongoose';
-import { areas } from '../enums/Crags';
+import { areas, routesTypes } from '../enums/Crags';
 
 const CragSchema = new mongoose.Schema({
     name: { type: String },
     description: { type: String },
+    routesTypes: [{ type: String, enum: routesTypes }],
     location: {
         lng: { type: Number },
         lt: { type: Number },
