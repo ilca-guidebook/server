@@ -7,7 +7,7 @@ const CragSchema = new mongoose.Schema({
     routesTypes: [{ type: String, enum: routesTypes }],
     location: {
         lng: { type: Number },
-        lt: { type: Number },
+        lat: { type: Number },
         wazeLink: { type: String },
         description: { type: String },
         area: { type: String, enum: areas },
