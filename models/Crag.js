@@ -13,7 +13,7 @@ const CragSchema = new mongoose.Schema({
         area: { type: String, enum: areas },
     },
     imageUrl: { type: String },
-    sectors: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Sector' }],
+    sectors: [{ type: mongoose.Schema.ObjectId, ref: 'Sector' }],
 });
 
 export default module.exports = mongoose.model('Crag', CragSchema);

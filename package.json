@@ -6,11 +6,14 @@
   "main": "server.js",
   "scripts": {
     "start": "nodemon -r esm -r dotenv/config server.js",
-    "devel": "node -r esm -r dotenv/config ./devScripts/devel.js"
+    "devel": "node -r esm -r dotenv/config ./devScripts/devel.js",
+    "format": "eslint --fix \"{,!(node_modules)/**/}*.{js,jsx}\"",
+    "prettier": "prettier --write \"{,!(node_modules)/**/}*.{js,jsx}\""
   },
   "dependencies": {
     "@sendgrid/mail": "^7.2.6",
     "bcrypt": "^5.0.0",
+    "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "esm": "^3.2.25",
     "express": "^4.17.1",
@@ -18,6 +21,10 @@
     "mongoose": "^5.9.27"
   },
   "devDependencies": {
-    "nodemon": "^2.0.4"
+    "eslint": "^7.24.0",
+    "eslint-config-prettier": "^8.2.0",
+    "eslint-plugin-prettier": "^3.4.0",
+    "nodemon": "^2.0.4",
+    "prettier": "^2.2.1"
   }
 }
