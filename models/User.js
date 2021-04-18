@@ -27,27 +27,30 @@ const UserSchema = new mongoose.Schema({
     authCode: { type: String },
 });
 
-UserSchema.methods.setAuthCode = async function(code) {
+UserSchema.methods.setAuthCode = async function (code) {
     this.authCode = await bcrypt.hash(code, BCRYPT_SALT_ROUNDS);
 };
-  
-UserSchema.methods.validateAuthCode = async function(code) {
+
+UserSchema.methods.validateAuthCode = async function (code) {
     return await bcrypt.compare(code, this.authCode);
 };
-  
-UserSchema.methods.generateJWT = function() {
+
+UserSchema.methods.generateJWT = function () {
     const today = new Date();
     const expirationDate = new Date(today);
     expirationDate.setDate(today.getDate() + 60);
 
-    return jwt.sign({
-        email: this.email.address,
-        id: this._id,
-        exp: parseInt(expirationDate.getTime() / 1000, 10),
-    }, process.env.JWT_SECRET);
+    return jwt.sign(
+        {
+            email: this.email.address,
+            id: this._id,
+            exp: parseInt(expirationDate.getTime() / 1000, 10),
+        },
+        process.env.JWT_SECRET
+    );
 };
 
-UserSchema.methods.toJSON = function() {
+UserSchema.methods.toJSON = function () {
     return {
         _id: this._id,
         name: this.name,

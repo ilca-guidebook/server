@@ -6,15 +6,19 @@ import { generateAuthCode } from '../helpers/user';
 
 const router = express.Router();
 
-router.post('/register', async (req, res, next) => {
-    const { body: { email, firstName, lastName, phone } } = req;
+router.post('/register', async (req, res) => {
+    const {
+        body: { email, firstName, lastName, phone },
+    } = req;
 
-    const existingUser = await UserModel.findOne({ 'email.address': email }).exec();
+    const existingUser = await UserModel.findOne({
+        'email.address': email,
+    }).exec();
     if (existingUser) {
         return res.sendStatus(409);
     }
 
-    if(!email) {
+    if (!email) {
         return res.status(422).json({
             errors: { email: 'is required' },
         });
@@ -25,10 +29,10 @@ router.post('/register', async (req, res, next) => {
         phone: { number: phone },
         name: { first: firstName, last: lastName },
     });
-   
+
     const code = generateAuthCode();
     await sendAuthCodeEmail(email, code);
-    
+
     if (process.env.ENVIRONMENT === 'dev') {
         console.log('code', code);
     }
@@ -40,17 +44,19 @@ router.post('/register', async (req, res, next) => {
 });
 
 router.post('/login', async (req, res) => {
-    const { body: { email } } = req;
-  
-    if(!email) {
+    const {
+        body: { email },
+    } = req;
+
+    if (!email) {
         return res.status(422).json({
             errors: { email: 'is required' },
         });
     }
 
     const user = await UserModel.findOne({ 'email.address': email }).exec();
-  
-    if(user) {
+
+    if (user) {
         const code = generateAuthCode();
         await sendAuthCodeEmail(email, code);
         if (process.env.ENVIRONMENT === 'dev') {
@@ -67,7 +73,9 @@ router.post('/login', async (req, res) => {
 });
 
 router.get('/validateAuthCode', async (req, res) => {
-    const { query: { email, code } } = req;
+    const {
+        query: { email, code },
+    } = req;
 
     const user = await UserModel.findOne({ 'email.address': email }).exec();
     const codeValidated = await user.validateAuthCode(code);
@@ -81,7 +89,9 @@ router.get('/validateAuthCode', async (req, res) => {
 });
 
 router.get('/me', async (req, res, next) => {
-    const { user: { id } } = req;
+    const {
+        user: { id },
+    } = req;
     const user = await UserModel.findById(id);
 
     if (!user) {

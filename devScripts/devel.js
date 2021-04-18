@@ -1,17 +1,18 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
-import CragModel from "../models/Crag";
-import SectorModel from "../models/Sector";
-import ClimbingRouteModel from "../models/ClimbingRoute";
+import CragModel from '../models/Crag';
+import SectorModel from '../models/Sector';
+import ClimbingRouteModel from '../models/ClimbingRoute';
 
-import beitArya from "../mockData/beitArye.json";
-import beitAryaBoulder from "../mockData/beitAryeBoulder.json";
-import beitOren from "../mockData/beitOren.json";
-import gitaEast from "../mockData/gitaEast.json";
-import gitaWest from "../mockData/gitaWest.json";
-import nahalTamar from "../mockData/NahalTamar.json";
-import yonim from "../mockData/yonim.json";
-import zanuah from "../mockData/Zanuah.json";
+import beitArya from '../mockData/beitArye.json';
+import beitAryaBoulder from '../mockData/beitAryeBoulder.json';
+import beitOren from '../mockData/beitOren.json';
+import gitaEast from '../mockData/gitaEast.json';
+import gitaWest from '../mockData/gitaWest.json';
+import nahalTamar from '../mockData/NahalTamar.json';
+import yonim from '../mockData/yonim.json';
+import zanuah from '../mockData/Zanuah.json';
+import { routeTypes } from '../enums/ClimbingRoutes';
 
 let DB;
 
@@ -21,119 +22,129 @@ let DB;
  * @param {Array} args
  * @returns {Object}
  */
-const argsToObject = args => {
-  const obj = {};
+const argsToObject = (args) => {
+    const obj = {};
 
-  args.forEach(item => {
-    const splitted = item.split(":");
+    args.forEach((item) => {
+        const splitted = item.split(':');
 
-    if (splitted[0] && splitted[1]) {
-      obj[splitted[0]] = splitted[1];
-    }
-  });
+        if (splitted[0] && splitted[1]) {
+            obj[splitted[0]] = splitted[1];
+        }
+    });
 
-  return obj;
+    return obj;
 };
 
 const connectDB = async () => {
-  DB = await mongoose.connect(process.env.MONGO_CONNECTION, {
-    useNewUrlParser: true,
-    useCreateIndex: true,
-    useFindAndModify: false
-  });
+    DB = await mongoose.connect(process.env.MONGO_CONNECTION, {
+        useNewUrlParser: true,
+        useCreateIndex: true,
+        useFindAndModify: false,
+    });
 
-  // Debug Mongoose
-  // mongoose.set('debug', true);
-  mongoose.Promise = global.Promise; // Use native promises as mongoose promises
+    // Debug Mongoose
+    // mongoose.set('debug', true);
+    mongoose.Promise = global.Promise; // Use native promises as mongoose promises
 };
 
 const importData = async () => {
-  const crags = [
-    beitArya,
-    beitAryaBoulder,
-    beitOren,
-    gitaEast,
-    gitaWest,
-    nahalTamar,
-    yonim,
-    zanuah
-  ];
-  const cragsDocuments = [];
+    const crags = [
+        beitArya,
+        beitAryaBoulder,
+        beitOren,
+        gitaEast,
+        gitaWest,
+        nahalTamar,
+        yonim,
+        zanuah,
+    ];
+    const cragsDocuments = [];
 
-  for (let i = 0; i < crags.length; i++) {
-    const { name, area, description, access, sectors } = crags[i];
-    const sectorsDocuments = [];
+    for (let i = 0; i < crags.length; i++) {
+        const { name, area, description, access, sectors } = crags[i];
+        const sectorsDocuments = [];
 
-    if (sectors) {
-      for (let j = 0; j < sectors.length; j++) {
-        const { name, routes, description } = sectors[j];
-        const routesDocuments = [];
+        if (sectors) {
+            for (let j = 0; j < sectors.length; j++) {
+                const { name, routes, description } = sectors[j];
+                const routesDocuments = [];
 
-        if (routes) {
-          for (let k = 0; k < routes.length; k++) {
-            const { name, grade, type, setBy, bolts, stars = 0 } = routes[k];
+                if (routes) {
+                    for (let k = 0; k < routes.length; k++) {
+                        const {
+                            name,
+                            grade,
+                            type,
+                            setBy,
+                            bolts,
+                            stars = 0,
+                        } = routes[k];
 
-            routesDocuments.push({
-              name,
-              description: "",
-              metaData: { grade, type, setBy, bolts, stars }
-            });
-          }
+                        const routeType = routeTypes.includes(type) ? type : '';
+                        routesDocuments.push({
+                            name,
+                            description: '',
+                            metaData: { grade, routeType, setBy, bolts, stars },
+                        });
+                    }
+                }
+
+                const routesIds = (
+                    await ClimbingRouteModel.insertMany(routesDocuments)
+                ).map((item) => item._id);
+                sectorsDocuments.push({
+                    name,
+                    description,
+                    routes: routesIds,
+                });
+            }
         }
 
-        const routesIds = (await ClimbingRouteModel.insertMany(routesDocuments)).map(
-          item => item._id
+        const sectorsIds = (await SectorModel.insertMany(sectorsDocuments)).map(
+            (item) => item._id
         );
-        sectorsDocuments.push({
-          name,
-          description,
-          routes: routesIds
+        cragsDocuments.push({
+            name,
+            description,
+            location: { description: access, area },
+            sectors: sectorsIds,
         });
-      }
     }
 
-    const sectorsIds = (await SectorModel.insertMany(sectorsDocuments)).map(item => item._id);
-    cragsDocuments.push({
-      name,
-      description,
-      location: { description: access, area },
-      sectors: sectorsIds
-    });
-  }
-
-  await CragModel.insertMany(cragsDocuments);
+    await CragModel.insertMany(cragsDocuments);
 };
 
 async function main() {
-  try {
-    const { command } = argsToObject(process.argv);
+    try {
+        const { command } = argsToObject(process.argv);
 
-    await connectDB();
+        await connectDB();
 
-    switch (command) {
-      case "health":
-        console.log("testing flow");
-        break;
-      case "importData":
-        await importData();
-        console.log("done importing data");
-        break;
-      default:
-        console.warn("Could not determine what to do");
-        break;
+        switch (command) {
+            case 'health':
+                console.log('testing flow');
+                break;
+            case 'importData':
+                await importData();
+                console.log('done importing data');
+                break;
+            default:
+                console.warn('Could not determine what to do');
+                break;
+        }
+    } catch (error) {
+        console.warn('error', error);
+    } finally {
+        console.log('disconnecting from db');
+        await DB.disconnect();
     }
-  } catch (error) {
-    console.warn("error", error);
-  } finally {
-    console.log("disconnecting from db");
-    await DB.disconnect();
-  }
 }
 
 main()
-  .then(() => {
-    console.log("finished performing task");
-  })
-  .catch(err => {
-    console.warn("error", err.message);
-  });
+    .then(() => {
+        console.log('finished performing task');
+    })
+    .catch((err) => {
+        console.warn('error', err.message);
+    });

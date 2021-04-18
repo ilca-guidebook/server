@@ -1,6 +1,6 @@
 import express from 'express';
 import mongoose from 'mongoose';
-
+import cors from 'cors';
 import auth from './middleware/express/auth';
 
 import ClimbingRoutes from './routes/climbingRoutes';
@@ -15,19 +15,24 @@ const PORT = process.env.PORT || 3000;
 const app = express();
 app.use(express.json());
 
+app.use(cors());
+
 // JWT
-app.use(auth.required.unless({
-  path: [
-    '/user/register',
-    '/user/login',
-    '/user/validateAuthCode',
-  ],
-}));
+app.use(
+    auth.required.unless({
+        path: [
+            '/user/register',
+            '/user/login',
+            '/user/validateAuthCode',
+            '/crags/recursive',
+        ],
+    })
+);
 
 mongoose.connect(process.env.MONGO_CONNECTION, {
-  useNewUrlParser: true,
-  useCreateIndex: true,
-  useFindAndModify: false,
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useFindAndModify: false,
 });
 
 // Debug Mongoose
@@ -44,4 +49,4 @@ app.use('/crags', Crags);
 app.use('/sectors', Sectors);
 
 app.listen(PORT);
-console.log(`Up and running`);
+console.log('Up and running');

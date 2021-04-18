@@ -35,8 +35,4 @@ export const grades = [
     '9c+',
 ];
 
-export const routeTypes = [
-    'Trad',
-    'Sport',
-    'Boulder',
-];
+export const routeTypes = ['Trad', 'Sport', 'Boulder', ''];

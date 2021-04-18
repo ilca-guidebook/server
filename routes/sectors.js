@@ -12,7 +12,9 @@ router.get('/', async (req, res) => {
 });
 
 router.post('/', permissions.write, async (req, res) => {
-    const { body: { data } } = req;
+    const {
+        body: { data },
+    } = req;
 
     const sector = new SectorModel(data);
     await sector.save();
@@ -21,12 +23,14 @@ router.post('/', permissions.write, async (req, res) => {
 });
 
 router.put('/', permissions.write, async (req, res) => {
-    const { body: { data } } = req;
+    const {
+        body: { data },
+    } = req;
 
     const sector = await SectorModel.findOneAndUpdate(
         { _id: data._id },
         { ...data },
-        { new: true },
+        { new: true }
     );
 
     return res.json({ sector });
