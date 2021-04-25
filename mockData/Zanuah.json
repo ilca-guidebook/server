@@ -2,6 +2,7 @@
   "name": "Zanuah",
   "description": "...",
   "area": "Center",
+  "routesTypes": ["Sport"],
   "sectors": [
     {
       "name": "Royal Road",

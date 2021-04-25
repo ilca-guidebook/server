@@ -2,6 +2,7 @@
   "name": "Beit Oren",
   "description": "...",
   "area": "North",
+  "routesTypes": ["Sport"],
   "sectors": [
     {
       "name": "Left",

@@ -2,6 +2,7 @@
   "name": "Gita West",
   "description": "...",
   "area": "North",
+  "routesTypes": ["Sport"],
   "sectors": [
     {
       "name": "Finals",

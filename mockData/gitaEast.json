@@ -2,6 +2,7 @@
     "name": "Gita East",
     "description": "...",
     "area": "North",
+    "routesTypes": ["Sport"],
     "sectors": [
         {
         "name": "Hilton",
