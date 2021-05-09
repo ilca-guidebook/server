@@ -2,6 +2,7 @@
   "name": "Yonim",
   "description": "...",
   "area": "North",
+  "routesTypes": ["Sport"],
   "sectors": [
     {
       "name": "Hamsa",
