@@ -9,9 +9,9 @@ import Crags from './routes/crags';
 import Sectors from './routes/sectors';
 
 // Constants
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 
-console.log('nitzanDev PORT', PORT);
+console.log('nitzanDev process.env.PORT', process.env.PORT);
 
 // App
 const app = express();
