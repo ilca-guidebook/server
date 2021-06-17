@@ -11,7 +11,7 @@ import Sectors from './routes/sectors';
 // Constants
 const PORT = process.env.PORT || 5000;
 
-console.log('nitzanDev process.env.PORT', process.env.PORT);
+console.log('nitzanDev process.env', process.env);
 
 // App
 const app = express();
