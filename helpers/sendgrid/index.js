@@ -1,7 +1,7 @@
 import sendgrid from '@sendgrid/mail';
 sendgrid.setApiKey(process.env.SENDGRID_API_KEY);
 
-const FROM = process.env.SENGRID_FROM;
+const FROM = process.env.SENDGRID_FROM;
 const TEMPLATES = {
     AUTH_CODE: process.env.SENDGRID_AUTH_CODE_TEMPLATE,
 };
