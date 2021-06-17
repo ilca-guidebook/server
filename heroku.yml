@@ -1,5 +1,0 @@
-build:
-  docker:
-    server: Dockerfile
-run:
-  server: npm start
