@@ -1,0 +1,85 @@
+export default {
+    'name': 'Beit Arya Boulder',
+    'description': '...',
+    'access': '...',
+    'area': 'Center',
+    'sectors': [
+      {
+        'name': 'The Boulder',
+        'routes': [
+          {
+            'name': 'Balance',
+            'grade': '6a+',
+            'type': 'Sport',
+            'bolts': ' 4'
+          },
+          {
+            'name': 'Tendentious',
+            'grade': '6b+',
+            'type': 'Sport',
+            'setBy': 'Adi Boyango, 1993',
+            'bolts': ' 4'
+          },
+          {
+            'name': 'Route #3',
+            'grade': '6c+',
+            'type': 'Sport',
+            'bolts': ' 2'
+          },
+          {
+            'name': 'The Holes',
+            'grade': '5c',
+            'type': 'Top'
+          },
+          {
+            'name': 'The Clown',
+            'grade': '6a',
+            'type': 'Sport',
+            'setBy': 'Tal Azulay, 1993',
+            'height': '3'
+          },
+          {
+            'name': 'Bridged',
+            'grade': '6a+',
+            'type': 'Sport',
+            'bolts': ' 1'
+          },
+          {
+            'name': 'The Stomach',
+            'grade': '6c',
+            'type': 'Sport',
+            'bolts': ' 3'
+          },
+          {
+            'name': 'Fork',
+            'grade': '6b',
+            'type': 'Sport',
+            'bolts': ' 3'
+          },
+          {
+            'name': 'Route 9',
+            'grade': '5c',
+            'type': 'Top'
+          },
+          {
+            'name': 'Route 10',
+            'grade': '5b',
+            'type': 'Top'
+          },
+          {
+            'name': 'Uri\'s Garden',
+            'grade': '5c',
+            'type': 'Sport',
+            'setBy': 'Arik Lerner, 1993',
+            'bolts': ' 4'
+          },
+          {
+            'name': 'The Cone',
+            'grade': '6a',
+            'type': 'Sport',
+            'bolts': ' 4'
+          }
+        ]
+      }
+    ]
+  }

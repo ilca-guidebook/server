@@ -4,14 +4,15 @@ import CragModel from '../models/Crag';
 import SectorModel from '../models/Sector';
 import ClimbingRouteModel from '../models/ClimbingRoute';
 
-import beitArya from '../mockData/beitArye.json';
-import beitAryaBoulder from '../mockData/beitAryeBoulder.json';
-import beitOren from '../mockData/beitOren.json';
-import gitaEast from '../mockData/gitaEast.json';
-import gitaWest from '../mockData/gitaWest.json';
-import nahalTamar from '../mockData/NahalTamar.json';
-import yonim from '../mockData/yonim.json';
-import zanuah from '../mockData/Zanuah.json';
+import beitArya from '../mockData/beitArye.js';
+import beitAryaBoulder from '../mockData/beitAryeBoulder.js';
+import beitOren from '../mockData/beitOren.js';
+import gitaEast from '../mockData/gitaEast.js';
+import gitaWest from '../mockData/gitaWest.js';
+import nahalTamar from '../mockData/NahalTamar.js';
+import yonim from '../mockData/yonim.js';
+import zanuah from '../mockData/Zanuah.js';
+import shilat from '../mockData/shilat.js';
 import { routeTypes } from '../enums/ClimbingRoutes';
 
 let DB;
@@ -49,6 +50,13 @@ const connectDB = async () => {
     mongoose.Promise = global.Promise; // Use native promises as mongoose promises
 };
 
+const cleanData = async () => {
+    await CragModel.deleteMany();
+    await SectorModel.deleteMany();
+    await ClimbingRouteModel.deleteMany();
+    console.log('All data has been cleaned!');
+};
+
 const importData = async () => {
     const crags = [
         beitArya,
@@ -59,11 +67,12 @@ const importData = async () => {
         nahalTamar,
         yonim,
         zanuah,
+        shilat,
     ];
     const cragsDocuments = [];
 
     for (let i = 0; i < crags.length; i++) {
-        const { name, area, description, access, sectors, routesTypes } = crags[i];
+        const { name, area, description, access, sectors, routesTypes, cragFeatures } = crags[i];
         const sectorsDocuments = [];
 
         if (sectors) {
@@ -80,12 +89,13 @@ const importData = async () => {
                             setBy,
                             bolts,
                             stars = 0,
+                            description: routeDescription = '',
                         } = routes[k];
 
                         const routeType = routeTypes.includes(type) ? type : '';
                         routesDocuments.push({
                             name,
-                            description: '',
+                            description: routeDescription,
                             metaData: { grade, routeType, setBy, bolts, stars },
                         });
                     }
@@ -111,6 +121,7 @@ const importData = async () => {
             location: { description: access, area },
             sectors: sectorsIds,
             routesTypes,
+            cragFeatures,
         });
     }
 
@@ -128,6 +139,7 @@ async function main() {
                 console.log('testing flow');
                 break;
             case 'importData':
+                await cleanData();
                 await importData();
                 console.log('done importing data');
                 break;

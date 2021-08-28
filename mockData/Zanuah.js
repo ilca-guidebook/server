@@ -1,0 +1,312 @@
+export default {
+  'name': 'Zanuah',
+  'description': '...',
+  'area': 'Center',
+  'routesTypes': ['Sport'],
+  'sectors': [
+    {
+      'name': 'Royal Road',
+      'routes': [
+        {
+          'name': 'Route 1  Set  2013',
+          'grade': '5a',
+          'type': 'Sport',
+          'height': '10'
+        },
+        {
+          'name': 'Route 2  Set  2013',
+          'grade': '5c',
+          'type': 'Sport',
+          'height': '10'
+        },
+        {
+          'name': 'Route 3  Set  2013',
+          'grade': '5c',
+          'type': 'Sport',
+          'height': '10'
+        },
+        {
+          'name': 'Route 4  Set  2013',
+          'grade': '6b',
+          'type': 'Sport',
+          'height': '10'
+        },
+        {
+          'name': 'Route 5  Set  2013',
+          'grade': '5b',
+          'type': 'Sport',
+          'height': '10'
+        },
+        {
+          'name': 'Route 6  Set  2013',
+          'grade': '5c',
+          'type': 'Sport',
+          'height': '10'
+        }
+      ]
+    },
+    {
+      'name': 'Seifeld',
+      'routes': [
+        {
+          'name': 'Sim salabim',
+          'grade': '6b',
+          'type': 'Sport',
+          'setBy': 'alexander lurye'
+        },
+        {
+          'name': 'The Dingo Ate Your Baby',
+          'grade': '6b+',
+          'type': 'Sport',
+          'setBy': 'Noam Weiss & Nimrod Nachmias, 2008',
+          'bolts': ' 5'
+        },
+        {
+          'name': 'Vandelay Industries',
+          'grade': '6b',
+          'type': 'Sport',
+          'setBy': 'Noam Weiss, 2008',
+          'bolts': ' 4'
+        },
+        {
+          'name': 'No Soup For You',
+          'grade': '6b',
+          'type': 'Sport',
+          'setBy': 'Noam Weiss, 2008',
+          'bolts': ' 4'
+        },
+        {
+          'name': 'Come Back 1 Year',
+          'grade': '6b',
+          'type': 'Sport',
+          'setBy': 'Nimrod Nachmias, 2008',
+          'bolts': ' 4'
+        },
+        {
+          'name': 'Constansa',
+          'grade': '7a',
+          'type': 'Sport',
+          'setBy': 'Noam Weiss,  Arik Lerner & Meir Ashkenazi, 2008',
+          'bolts': ' 4'
+        },
+        {
+          'name': 'Cosmo Kramer',
+          'grade': '6c',
+          'type': 'Sport',
+          'setBy': 'Noam Weiss,  Arik Lerner & Meir Ashkenazi, 2008',
+          'bolts': ' 4'
+        },
+        {
+          'name': 'Jugdish',
+          'grade': '6b+',
+          'type': 'Sport',
+          'setBy': 'Noam Weiss,  Arik Lerner & Meir Ashkenazi, 2008',
+          'bolts': ' 4'
+        }
+      ]
+    },
+    {
+      'name': 'Left',
+      'routes': [
+        {
+          'name': 'Route 1',
+          'grade': '6a',
+          'type': 'Sport',
+          'height': '4'
+        },
+        {
+          'name': 'Route 2',
+          'grade': '5b',
+          'type': 'Sport',
+          'bolts': ' 3'
+        },
+        {
+          'name': 'Route 3',
+          'grade': '6a',
+          'type': 'Sport',
+          'bolts': ' 4'
+        },
+        {
+          'name': 'Route 4',
+          'grade': '5b',
+          'type': 'Sport',
+          'bolts': ' 4'
+        },
+        {
+          'name': 'Route 5',
+          'grade': '5b',
+          'type': 'Sport',
+          'bolts': ' 4'
+        },
+        {
+          'name': 'Route 6',
+          'grade': '5c',
+          'type': 'Sport',
+          'height': '10'
+        },
+        {
+          'name': 'Route 7',
+          'grade': '5b',
+          'type': 'Sport',
+          'height': '10'
+        },
+        {
+          'name': 'Route 8',
+          'grade': '6a',
+          'type': 'Sport',
+          'height': '11'
+        },
+        {
+          'name': 'Route 9',
+          'grade': '6b',
+          'type': 'Sport',
+          'height': '10'
+        }
+      ]
+    },
+    {
+      'name': 'Boulder',
+      'routes': [
+        {
+          'name': 'Crepes',
+          'grade': '5b',
+          'type': 'Sport',
+          'height': '10'
+        },
+        {
+          'name': 'KSP',
+          'grade': '5b',
+          'type': 'Sport',
+          'height': '10'
+        },
+        {
+          'name': 'Falling Childrens',
+          'grade': '6b+',
+          'type': 'Sport',
+          'height': '10'
+        },
+        {
+          'name': 'Sickle',
+          'grade': '6a',
+          'type': 'Sport',
+          'height': '15'
+        },
+        {
+          'name': 'Stand Up',
+          'grade': '6a',
+          'type': 'Sport',
+          'height': '13'
+        },
+        {
+          'name': 'Slowly',
+          'grade': '6b',
+          'type': 'Sport',
+          'height': '11'
+        },
+        {
+          'name': 'Ken-Guru',
+          'grade': '6b+',
+          'type': 'Sport',
+          'setBy': 'Alex Lurye, 2013',
+          'height': '11'
+        }
+      ]
+    },
+    {
+      'name': 'Right',
+      'routes': [
+        {
+          'name': 'Om',
+          'grade': '7a+',
+          'type': 'Sport',
+          'bolts': ' 5'
+        },
+        {
+          'name': 'Grandpa',
+          'grade': '6c+',
+          'type': 'Sport',
+          'bolts': ' 5'
+        },
+        {
+          'name': 'Black Hole Sun',
+          'grade': '6c',
+          'type': 'Sport',
+          'bolts': ' 5'
+        },
+        {
+          'name': 'Mind Security',
+          'grade': '6b',
+          'type': 'Sport',
+          'bolts': ' 4'
+        },
+        {
+          'name': 'Pull Me, Under',
+          'grade': '6b+',
+          'type': 'Sport',
+          'bolts': ' 4'
+        },
+        {
+          'name': 'Diagonal',
+          'grade': '6a+',
+          'type': 'Sport',
+          'bolts': ' 3',
+          'stars': 1
+        },
+        {
+          'name': 'Cap',
+          'grade': '6a+',
+          'type': 'Sport',
+          'bolts': ' 3'
+        },
+        {
+          'name': 'Hide Yourself',
+          'grade': '5c',
+          'type': 'Sport',
+          'bolts': ' 3'
+        },
+        {
+          'name': 'Stranger',
+          'grade': '5b',
+          'type': 'Sport',
+          'bolts': ' 3'
+        },
+        {
+          'name': 'Punish',
+          'grade': '6a',
+          'type': 'Sport',
+          'bolts': ' 3'
+        },
+        {
+          'name': 'Nealty',
+          'grade': '6a+',
+          'type': 'Sport',
+          'bolts': ' 3'
+        },
+        {
+          'name': 'Sexy Lady',
+          'grade': '5c+',
+          'type': 'Sport',
+          'bolts': ' 5'
+        },
+        {
+          'name': 'Bearded Podge',
+          'grade': '5c',
+          'type': 'Sport',
+          'bolts': ' 4'
+        },
+        {
+          'name': 'Walk This Way',
+          'grade': '5b',
+          'type': 'Sport',
+          'bolts': ' 3'
+        },
+        {
+          'name': 'Dude',
+          'grade': '6a',
+          'type': 'Sport',
+          'bolts': ' 4'
+        }
+      ]
+    }
+  ]
+}
