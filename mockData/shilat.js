@@ -36,6 +36,7 @@ the gooie water and take the left trail heading up to the cliff.`,
         'shade': 'In summer, the crag recives shade at around 13:00 and you can climb till dark. In the winter, it’s shady most of the day, though often wet.',
         'cellularCoverage': 'Yes',
     },
+    'wazeLink': 'https://ul.waze.com/ul?preview_venue_id=22937919.229444728.7670&navigate=yes&utm_campaign=waze_website&utm_source=waze_website&utm_medium=lm_share_location',
   'sectors': [
     {
       'name': 'Main Sector',

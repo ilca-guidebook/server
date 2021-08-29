@@ -72,7 +72,7 @@ const importData = async () => {
     const cragsDocuments = [];
 
     for (let i = 0; i < crags.length; i++) {
-        const { name, area, description, access, sectors, routesTypes, cragFeatures } = crags[i];
+        const { name, area, description, access, sectors, routesTypes, cragFeatures, wazeLink } = crags[i];
         const sectorsDocuments = [];
 
         if (sectors) {
@@ -118,7 +118,7 @@ const importData = async () => {
         cragsDocuments.push({
             name,
             description,
-            location: { description: access, area },
+            location: { description: access, area, wazeLink },
             sectors: sectorsIds,
             routesTypes,
             cragFeatures,
