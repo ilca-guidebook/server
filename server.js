@@ -7,6 +7,7 @@ import ClimbingRoutes from './routes/climbingRoutes';
 import User from './routes/user';
 import Crags from './routes/crags';
 import Sectors from './routes/sectors';
+import Contentful from './routes/contentful';
 
 // Constants
 const PORT = process.env.PORT || 3000;
@@ -25,6 +26,7 @@ app.use(
             '/user/login',
             '/user/validateAuthCode',
             '/crags/recursive',
+            '/content',
         ],
     })
 );
@@ -48,6 +50,7 @@ app.use('/climbingroutes', ClimbingRoutes);
 app.use('/user', User);
 app.use('/crags', Crags);
 app.use('/sectors', Sectors);
+app.use('/content', Contentful);
 
 app.listen(PORT);
 console.log('Up and running');
