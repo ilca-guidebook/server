@@ -1,6 +1,7 @@
 import express from 'express';
 
 import contentfulClient from '../config/conentful';
+
 const router = express.Router();
 
 router.get('/', async (req, res) => {
@@ -13,13 +14,21 @@ router.get('/', async (req, res) => {
         return {
             ...fields,
             sectors: fields.sectors.map(({ fields: sectorFields }) => {
+                const climbingRoutes = (sectorFields.climbingRoute || []).map(({
+                    fields: climbingRouteFields,
+                }) => climbingRouteFields);
+                const boulderProblems = (sectorFields.boulderProblem || []).map(({
+                    fields: boulderProblemsFields,
+                }) => boulderProblemsFields);
+
                 const sectorData = {
                     ...sectorFields,
-                    routes: sectorFields.climbingRoute.map(({
-                        fields: climbingRouteFields,
-                    }) => climbingRouteFields),
+                    climbingRoutes,
+                    boulderProblems,
                 };
+
                 delete sectorData.climbingRoute;
+                delete sectorData.boulderProblem;
 
                 return sectorData;
             }),
