@@ -10,19 +10,23 @@ router.get('/', async (req, res) => {
         include: 2,
     });
 
-    const crags = entries.items.map(({ fields }) => {
+    const crags = entries.items.map(({ fields, sys: { id } }) => {
         return {
+            id,
             ...fields,
-            sectors: fields.sectors.map(({ fields: sectorFields }) => {
+            sectors: fields.sectors.map(({ fields: sectorFields, sys: { id } }) => {
                 const climbingRoutes = (sectorFields.climbingRoute || []).map(({
                     fields: climbingRouteFields,
-                }) => climbingRouteFields);
+                    sys: { id },
+                }) => ({ ...climbingRouteFields, id }));
                 const boulderProblems = (sectorFields.boulderProblem || []).map(({
                     fields: boulderProblemsFields,
-                }) => boulderProblemsFields);
+                    sys: { id },
+                }) => ({ ...boulderProblemsFields, id }));
 
                 const sectorData = {
                     ...sectorFields,
+                    id,
                     climbingRoutes,
                     boulderProblems,
                 };
