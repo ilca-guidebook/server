@@ -1,8 +1,8 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
-import auth from './middleware/express/auth';
 
+import auth from './middleware/express/auth';
 import User from './routes/user';
 import Contentful from './routes/contentful';
 
