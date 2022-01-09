@@ -1,91 +1,88 @@
 import express from 'express';
 
 import UserModel from '../models/User';
-import { sendAuthCodeEmail } from '../helpers/sendgrid';
-import { generateAuthCode } from '../helpers/user';
+import { isUserPartOfILCA } from '../apis/loglig';
+import { encryptIdNumber } from '../utils/encryption';
 
 const router = express.Router();
 
-router.post('/register', async (req, res) => {
-    const {
-        body: { email, firstName, lastName, phone },
-    } = req;
+// router.post('/register', async (req, res) => {
+//     const {
+//         body: { email, firstName, lastName, phone },
+//     } = req;
 
-    const existingUser = await UserModel.findOne({
-        'email.address': email,
-    }).exec();
-    if (existingUser) {
-        return res.sendStatus(409);
-    }
+//     const existingUser = await UserModel.findOne({
+//         'email.address': email,
+//     }).exec();
+//     if (existingUser) {
+//         return res.sendStatus(409);
+//     }
 
-    if (!email) {
-        return res.status(422).json({
-            errors: { email: 'is required' },
-        });
-    }
+//     if (!email) {
+//         return res.status(422).json({
+//             errors: { email: 'is required' },
+//         });
+//     }
 
-    const user = new UserModel({
-        email: { address: email },
-        phone: { number: phone },
-        name: { first: firstName, last: lastName },
-    });
+//     const user = new UserModel({
+//         email: { address: email },
+//         phone: { number: phone },
+//         name: { first: firstName, last: lastName },
+//     });
 
-    const code = generateAuthCode();
-    await sendAuthCodeEmail(email, code);
+//     await user.save();
 
-    if (process.env.ENVIRONMENT === 'dev') {
-        console.log('code', code);
-    }
+//     return res.json({ user: user.toJSON() });
+// });
 
-    await user.setAuthCode(code);
-    await user.save();
-
-    return res.json({ user: user.toJSON() });
-});
+/**
+ * -router.get('/validateAuthCode', async (req, res) => {
+-    const {
+-        query: { email, code },
+-    } = req;
+-
+-    const user = await UserModel.findOne({ 'email.address': email }).exec();
+-    const codeValidated = await user.validateAuthCode(code);
+-
+-    if (!codeValidated) {
+-        return res.sendStatus(401);
+-    }
+-
+-    res.append('token', user.generateJWT());
+-    return res.json({ user: user.toJSON() });
+-});
+ */
 
 router.post('/login', async (req, res) => {
     const {
-        body: { email },
+        body: { idNumber },
     } = req;
 
-    if (!email) {
+    if (!idNumber) {
         return res.status(422).json({
-            errors: { email: 'is required' },
+            errors: { idNumber: 'is required' },
         });
     }
 
-    const user = await UserModel.findOne({ 'email.address': email }).exec();
+    if (!isUserPartOfILCA()) {
+        return res.sendStatus(400);
+    }
 
-    if (user) {
-        const code = generateAuthCode();
-        await sendAuthCodeEmail(email, code);
-        if (process.env.ENVIRONMENT === 'dev') {
-            console.log('code', code);
+    try {
+        const user = await UserModel.findOne({ 'idNumber': idNumber }).exec();
+
+        if (user) {
+            return res.json({ user: user.toJSON(), token: user.generateJWT() });
         }
 
-        await user.setAuthCode(code);
-        await user.save();
+        const newUser = new UserModel({ idNumber });
+        await newUser.save();
+        return res.json({ user: newUser.toJSON(), token: newUser.generateJWT() });
+    } catch (e) {
+        console.log('nitzanDev e', e);
 
-        return res.json({ user: user.toJSON() });
+        return res.sendStatus(500);
     }
-
-    return res.sendStatus(400);
-});
-
-router.get('/validateAuthCode', async (req, res) => {
-    const {
-        query: { email, code },
-    } = req;
-
-    const user = await UserModel.findOne({ 'email.address': email }).exec();
-    const codeValidated = await user.validateAuthCode(code);
-
-    if (!codeValidated) {
-        return res.sendStatus(401);
-    }
-
-    res.append('token', user.generateJWT());
-    return res.json({ user: user.toJSON() });
 });
 
 router.get('/me', async (req, res, next) => {

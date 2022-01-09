@@ -3,10 +3,7 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import auth from './middleware/express/auth';
 
-import ClimbingRoutes from './routes/climbingRoutes';
 import User from './routes/user';
-import Crags from './routes/crags';
-import Sectors from './routes/sectors';
 import Contentful from './routes/contentful';
 
 // Constants
@@ -22,11 +19,8 @@ app.use(cors());
 app.use(
     auth.required.unless({
         path: [
-            '/user/register',
             '/user/login',
-            '/user/validateAuthCode',
             '/crags/recursive',
-            '/content',
         ],
     })
 );
@@ -46,10 +40,7 @@ app.get('/', (req, res) => {
     res.send('Hello World');
 });
 
-app.use('/climbingroutes', ClimbingRoutes);
 app.use('/user', User);
-app.use('/crags', Crags);
-app.use('/sectors', Sectors);
 app.use('/content', Contentful);
 
 app.listen(PORT);
