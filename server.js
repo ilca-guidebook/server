@@ -19,6 +19,7 @@ app.use(cors());
 app.use(
     auth.required.unless({
         path: [
+            '/',
             '/user/login',
             '/crags/recursive',
         ],
