@@ -8,6 +8,7 @@ import Contentful from './routes/contentful';
 
 // Constants
 const PORT = process.env.PORT || 3000;
+const LATEST_APP_VERSION = '1.0.0';
 
 // App
 const app = express();
@@ -45,7 +46,22 @@ app.use('/user', User);
 app.use('/content', Contentful);
 
 app.get('/version', (req, res) => {
-    res.send('1.0.0');
+    const { query: { clientVersion } } = req;
+
+    if (!LATEST_APP_VERSION) {
+        return res.send(false);
+    }
+
+    const splitLatestVersion = LATEST_APP_VERSION.split('.');
+    const splitCurrentVersion = clientVersion.split('.');
+
+    for (let i = 0; i < 3; i++) {
+        if (parseInt(splitLatestVersion[i], 10) > parseInt(splitCurrentVersion[i], 10)) {
+            return res.send(true);
+        }
+    }
+
+    return res.send(false);
 });
 
 app.listen(PORT);
