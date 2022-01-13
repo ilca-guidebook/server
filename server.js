@@ -44,5 +44,9 @@ app.get('/', (req, res) => {
 app.use('/user', User);
 app.use('/content', Contentful);
 
+app.get('/version', (req, res) => {
+    res.send('1.0.0');
+});
+
 app.listen(PORT);
 console.log('Up and running');
