@@ -45,11 +45,11 @@ app.get('/', (req, res) => {
 app.use('/user', User);
 app.use('/content', Contentful);
 
-app.get('/version', (req, res) => {
+app.get('/needUpdate', (req, res) => {
     const { query: { clientVersion } } = req;
 
     if (!LATEST_APP_VERSION) {
-        return res.send(false);
+        return res.json({ needUpdate: false });
     }
 
     const splitLatestVersion = LATEST_APP_VERSION.split('.');
@@ -57,11 +57,11 @@ app.get('/version', (req, res) => {
 
     for (let i = 0; i < 3; i++) {
         if (parseInt(splitLatestVersion[i], 10) > parseInt(splitCurrentVersion[i], 10)) {
-            return res.send(true);
+            return res.json({ needUpdate: true, updateUrl: '' });
         }
     }
 
-    return res.send(false);
+    return res.json({ needUpdate: false });
 });
 
 app.listen(PORT);
