@@ -11,9 +11,18 @@ router.get('/', async (req, res) => {
     });
 
     const crags = entries.items.map(({ fields, sys: { id } }) => {
+        const cragFeatures = {
+            rockType: fields.rockType,
+            routesLength: fields.routesLength,
+            season: fields.season,
+            shade: fields.shade,
+            cellularCoverage: fields.cellularCoverage,
+        };
+
         return {
             id,
             ...fields,
+            cragFeatures,
             sectors: fields.sectors.map(({ fields: sectorFields, sys: { id } }) => {
                 const climbingRoutes = (sectorFields.climbingRoute || []).map(({
                     fields: climbingRouteFields,
