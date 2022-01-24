@@ -40,6 +40,12 @@ router.get('/', async (req, res) => {
                     boulderProblems,
                 };
 
+                const { image: { fields: { file: { url: sectorImage } = {} } = {} } = {} } = sectorFields;
+
+                if (sectorImage) {
+                    sectorData.sectorImage = `https:${sectorImage}`;
+                }
+
                 delete sectorData.climbingRoute;
                 delete sectorData.boulderProblem;
 
@@ -48,7 +54,6 @@ router.get('/', async (req, res) => {
         };
     });
 
-    // return res.json({ climbingRoutes });
     return res.json(crags);
 });
 
