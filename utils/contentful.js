@@ -53,7 +53,7 @@ export const extractCragData = (crags) => {
     } = fields;
 
     if (coverImageUrl) {
-        cragData.coverImage = coverImageUrl;
+        cragData.coverImage = `https:${coverImageUrl}`;
     }
 
     if (galleryImages && galleryImages.length) {
