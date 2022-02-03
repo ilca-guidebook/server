@@ -8,16 +8,17 @@ const router = express.Router();
 
 router.post('/login', async (req, res) => {
     const {
-        body: { idNumber, password },
+        body: { idNumber, dateOfBirth },
     } = req;
 
-    if (!idNumber || !password) {
+    if (!idNumber || !dateOfBirth) {
         return res.status(422).json({
             errors: { idNumber: 'is required' },
         });
     }
 
-    if (!isUserPartOfILCA(idNumber, password)) {
+    const isIlcaMember = await isUserPartOfILCA(idNumber, dateOfBirth);
+    if (!isIlcaMember) {
         return res.sendStatus(400);
     }
 
