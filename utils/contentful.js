@@ -4,11 +4,13 @@ const extractSectorsData = (sectors) => {
     const climbingRoutes = (sectorFields.climbingRoute || []).map(({
         fields: climbingRouteFields,
         sys: { id },
-    }) => ({ ...climbingRouteFields, id }));
+    }) => {
+      return { ...climbingRouteFields, id, routeId: climbingRouteFields.name.toLowerCase().replace(/ /g, '-') };
+    });
     const boulderProblems = (sectorFields.boulderProblem || []).map(({
         fields: boulderProblemsFields,
         sys: { id },
-    }) => ({ ...boulderProblemsFields, id }));
+    }) => ({ ...boulderProblemsFields, id, routeId: boulderProblemsFields.name.toLowerCase().replace(/ /g, '-') }));
 
     const sectorData = {
         ...sectorFields,
