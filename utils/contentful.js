@@ -4,13 +4,25 @@ const extractSectorsData = (sectors) => {
     const climbingRoutes = (sectorFields.climbingRoute || []).map(({
         fields: climbingRouteFields,
         sys: { id },
-    }) => {
-      return { ...climbingRouteFields, id, routeId: climbingRouteFields.name.toLowerCase().replace(/ /g, '-') };
+    }, index) => {
+      return {
+        ...climbingRouteFields,
+        id,
+        routeId: climbingRouteFields.name.toLowerCase().replace(/ /g, '-'),
+        position: index,
+      };
     });
     const boulderProblems = (sectorFields.boulderProblem || []).map(({
         fields: boulderProblemsFields,
         sys: { id },
-    }) => ({ ...boulderProblemsFields, id, routeId: boulderProblemsFields.name.toLowerCase().replace(/ /g, '-') }));
+    }, index) => {
+      return {
+        ...boulderProblemsFields,
+        id,
+        routeId: boulderProblemsFields.name.toLowerCase().replace(/ /g, '-'),
+        position: index,
+      };
+    });
 
     const sectorData = {
         ...sectorFields,
