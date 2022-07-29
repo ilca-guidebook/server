@@ -17,9 +17,13 @@ router.post('/login', async (req, res) => {
         });
     }
 
-    const isIlcaMember = await isUserPartOfILCA(idNumber, dateOfBirth);
-    if (!isIlcaMember) {
+    const isGooglePlayDemo = idNumber === process.env.GOOGLE_PLAY_DEMO_USER && dateOfBirth === process.env.GOOGLE_PLAY_DEMO_BIRTH;
+
+    if (!isGooglePlayDemo) {
+      const isIlcaMember = await isUserPartOfILCA(idNumber, dateOfBirth);
+      if (!isIlcaMember) {
         return res.sendStatus(400);
+      }
     }
 
     try {
