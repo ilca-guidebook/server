@@ -1,170 +1,170 @@
 export default {
-  'name': 'Beit Oren',
-  'description': '...',
-  'area': 'North',
-  'routesTypes': ['Sport'],
-  'sectors': [
+  name: 'Beit Oren',
+  description: '...',
+  area: 'North',
+  routesTypes: ['Sport'],
+  sectors: [
     {
-      'name': 'Left',
-      'routes': [
+      name: 'Left',
+      routes: [
         {
-          'name': 'Left Roof',
-          'grade': '7a',
-          'type': 'Sport',
-          'bolts': ' 4',
-          'stars': 1
+          name: 'Left Roof',
+          grade: '7a',
+          type: 'Sport',
+          bolts: ' 4',
+          stars: 1,
         },
         {
-          'name': 'Right Roof',
-          'grade': '6c+',
-          'type': 'Sport',
-          'bolts': ' 4',
-          'stars': 1
+          name: 'Right Roof',
+          grade: '6c+',
+          type: 'Sport',
+          bolts: ' 4',
+          stars: 1,
         },
         {
-          'name': 'Dina',
-          'grade': '6b',
-          'type': 'Sport',
-          'bolts': ' 6',
-          'stars': 1
+          name: 'Dina',
+          grade: '6b',
+          type: 'Sport',
+          bolts: ' 6',
+          stars: 1,
         },
         {
-          'name': 'Banana',
-          'grade': '6c',
-          'type': 'Sport',
-          'bolts': ' 7',
-          'stars': 3
+          name: 'Banana',
+          grade: '6c',
+          type: 'Sport',
+          bolts: ' 7',
+          stars: 3,
         },
         {
-          'name': 'Hish-Gad',
-          'grade': '7a',
-          'type': 'Sport',
-          'bolts': ' 8',
-          'stars': 2
+          name: 'Hish-Gad',
+          grade: '7a',
+          type: 'Sport',
+          bolts: ' 8',
+          stars: 2,
         },
         {
-          'name': 'Bacchus',
-          'grade': '6a+',
-          'type': 'Sport',
-          'bolts': ' 8',
-          'stars': 2
+          name: 'Bacchus',
+          grade: '6a+',
+          type: 'Sport',
+          bolts: ' 8',
+          stars: 2,
         },
         {
-          'name': 'Spider Monkey',
-          'grade': '7b+',
-          'type': 'Sport',
-          'bolts': ' 6',
-          'stars': 3
+          name: 'Spider Monkey',
+          grade: '7b+',
+          type: 'Sport',
+          bolts: ' 6',
+          stars: 3,
         },
         {
-          'name': 'The Crack',
-          'grade': '6a',
-          'type': 'Trad',
-          'height': '9',
-          'stars': 2
-        }
-      ]
+          name: 'The Crack',
+          grade: '6a',
+          type: 'Trad',
+          height: '9',
+          stars: 2,
+        },
+      ],
     },
     {
-      'name': 'Middle',
-      'routes': [
+      name: 'Middle',
+      routes: [
         {
-          'name': 'Hysteria',
-          'grade': '7c+',
-          'type': 'Sport',
-          'bolts': ' 4',
-          'stars': 2
+          name: 'Hysteria',
+          grade: '7c+',
+          type: 'Sport',
+          bolts: ' 4',
+          stars: 2,
         },
         {
-          'name': 'Ears',
-          'grade': '6c+',
-          'type': 'Sport',
-          'bolts': ' 5',
-          'stars': 2
+          name: 'Ears',
+          grade: '6c+',
+          type: 'Sport',
+          bolts: ' 5',
+          stars: 2,
         },
         {
-          'name': 'Pinch',
-          'grade': '7a',
-          'type': 'Sport',
-          'bolts': ' 5',
-          'stars': 3
+          name: 'Pinch',
+          grade: '7a',
+          type: 'Sport',
+          bolts: ' 5',
+          stars: 3,
         },
         {
-          'name': 'Holes',
-          'grade': '5c',
-          'type': 'Sport',
-          'bolts': ' 8',
-          'stars': 1
+          name: 'Holes',
+          grade: '5c',
+          type: 'Sport',
+          bolts: ' 8',
+          stars: 1,
         },
         {
-          'name': 'Shandor',
-          'grade': '6b',
-          'type': 'Sport',
-          'bolts': ' 7',
-          'stars': 1
+          name: 'Shandor',
+          grade: '6b',
+          type: 'Sport',
+          bolts: ' 7',
+          stars: 1,
         },
         {
-          'name': 'Stairs',
-          'grade': '5b',
-          'type': 'Sport',
-          'bolts': ' 7',
-          'stars': 1
+          name: 'Stairs',
+          grade: '5b',
+          type: 'Sport',
+          bolts: ' 7',
+          stars: 1,
         },
         {
-          'name': 'Fuck 6a!',
-          'grade': '6a',
-          'type': 'Sport',
-          'bolts': ' 8',
-          'stars': 1
+          name: 'Fuck 6a!',
+          grade: '6a',
+          type: 'Sport',
+          bolts: ' 8',
+          stars: 1,
         },
         {
-          'name': 'Slovotka',
-          'grade': '5c+',
-          'type': 'Sport',
-          'bolts': ' 7',
-          'stars': 1
+          name: 'Slovotka',
+          grade: '5c+',
+          type: 'Sport',
+          bolts: ' 7',
+          stars: 1,
         },
         {
-          'name': 'Six Boom',
-          'grade': '6c',
-          'type': 'Sport',
-          'bolts': ' 7',
-          'stars': 2
-        }
-      ]
+          name: 'Six Boom',
+          grade: '6c',
+          type: 'Sport',
+          bolts: ' 7',
+          stars: 2,
+        },
+      ],
     },
     {
-      'name': 'Right',
-      'routes': [
+      name: 'Right',
+      routes: [
         {
-          'name': 'Enviromental',
-          'grade': '5c+',
-          'type': 'Sport',
-          'bolts': ' 6',
-          'stars': 1
+          name: 'Enviromental',
+          grade: '5c+',
+          type: 'Sport',
+          bolts: ' 6',
+          stars: 1,
         },
         {
-          'name': 'Multiverse',
-          'grade': '6b+',
-          'type': 'Sport',
-          'bolts': ' 4',
-          'stars': 1
+          name: 'Multiverse',
+          grade: '6b+',
+          type: 'Sport',
+          bolts: ' 4',
+          stars: 1,
         },
         {
-          'name': 'Yulia',
-          'grade': '6b+',
-          'type': 'Sport',
-          'bolts': ' 4',
-          'stars': 2
+          name: 'Yulia',
+          grade: '6b+',
+          type: 'Sport',
+          bolts: ' 4',
+          stars: 2,
         },
         {
-          'name': 'The Nose',
-          'grade': '6a',
-          'type': 'Sport',
-          'bolts': ' 4',
-          'stars': 1
-        }
-      ]
-    }
-  ]
-}
+          name: 'The Nose',
+          grade: '6a',
+          type: 'Sport',
+          bolts: ' 4',
+          stars: 1,
+        },
+      ],
+    },
+  ],
+};
