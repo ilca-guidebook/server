@@ -1,5 +1,5 @@
 // TODO: Write tests
-const PROD_VERSION = [2, 0, 0];
+const PROD_VERSION = [1, 0, 0];
 
 const splitCurrentVersion = (version = '0.0.0') => {
   return version.split('.').map((item) => parseInt(item, 10));
