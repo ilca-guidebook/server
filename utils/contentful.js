@@ -1,8 +1,8 @@
-const extractSectorsData = (sectors) => {
+const extractSectorsData = (sector) => {
   const {
     fields: sectorFields,
     sys: { id },
-  } = sectors;
+  } = sector;
 
   const climbingRoutes = (sectorFields.climbingRoute || []).map(
     ({ fields: climbingRouteFields, sys: { id } }, index) => {
@@ -45,46 +45,57 @@ const extractSectorsData = (sectors) => {
 };
 
 export const extractCragsData = (crags) => {
-  return crags.items.map((crag) => {
-    const {
-      fields,
-      sys: { id },
-    } = crag;
+  return crags.items
+    .map((crag) => {
+      const {
+        fields,
+        sys: { id },
+      } = crag;
 
-    const cragFeatures = {
-      rockType: fields.rockType,
-      routesLength: fields.routesLength,
-      season: fields.season,
-      shade: fields.shade,
-      cellularCoverage: fields.cellularCoverage,
-    };
+      const cragFeatures = {
+        rockType: fields.rockType,
+        routesLength: fields.routesLength,
+        season: fields.season,
+        shade: fields.shade,
+        cellularCoverage: fields.cellularCoverage,
+      };
 
-    const cragData = {
-      id,
-      ...fields,
-      cragFeatures,
-      sectors: fields.sectors.map(extractSectorsData),
-    };
+      const cragData = {
+        id,
+        ...fields,
+        cragFeatures,
+        sectors: fields.sectors.filter(({ fields }) => !!fields).map(extractSectorsData),
+      };
 
-    const { coverImage: { fields: { file: { url: coverImageUrl } = {} } = {} } = {}, galleryImages } = fields;
+      if (cragData.name === 'Nitzan') {
+        console.log('nitzan cragData', cragData);
+      }
 
-    if (coverImageUrl) {
-      cragData.coverImage = `https:${coverImageUrl}`;
-    }
+      // Skip empty crags (no sectors)
+      if (!cragData.sectors.length) {
+        return null;
+      }
 
-    if (galleryImages && galleryImages.length) {
-      cragData.galleryImages = galleryImages.map((image) => {
-        const { fields: { file: { url } = {} } = {} } = image;
-        const thumbnail = `https:${url}?w=200&h=200&fit=crop`;
-        const fullSize = `https:${url}`;
+      const { coverImage: { fields: { file: { url: coverImageUrl } = {} } = {} } = {}, galleryImages } = fields;
 
-        return {
-          fullSize,
-          thumbnail,
-        };
-      });
-    }
+      if (coverImageUrl) {
+        cragData.coverImage = `https:${coverImageUrl}`;
+      }
 
-    return cragData;
-  });
+      if (galleryImages && galleryImages.length) {
+        cragData.galleryImages = galleryImages.map((image) => {
+          const { fields: { file: { url } = {} } = {} } = image;
+          const thumbnail = `https:${url}?w=200&h=200&fit=crop`;
+          const fullSize = `https:${url}`;
+
+          return {
+            fullSize,
+            thumbnail,
+          };
+        });
+      }
+
+      return cragData;
+    })
+    .filter((crag) => crag);
 };
