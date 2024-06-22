@@ -1,8 +1,8 @@
 import express from 'express';
 
-import UserModel from '../models/User';
-import { isUserPartOfILCA } from '../apis/loglig';
-import { encryptIdNumber } from '../utils/encryption';
+import UserModel from '../models/User.js';
+import { isUserPartOfILCA } from '../apis/loglig/index.js';
+import { encryptIdNumber } from '../utils/encryption.js';
 
 const router = express.Router();
 
@@ -46,9 +46,7 @@ router.post('/login', async (req, res) => {
 });
 
 router.get('/', async (req, res) => {
-  const {
-    user: { id },
-  } = req;
+  const { auth: { id } } = req;
 
   const user = await UserModel.findById(id);
 

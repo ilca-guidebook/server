@@ -1,7 +1,7 @@
 import express from 'express';
 
-import { extractCragsData } from '../utils/contentful';
-import contentfulClient from '../config/conentful';
+import { extractCragsData } from '../utils/contentful.js';
+import contentfulClient from '../config/conentful.js';
 
 const router = express.Router();
 

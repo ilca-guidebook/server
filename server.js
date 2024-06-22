@@ -4,10 +4,11 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import imageToBase64 from 'image-to-base64';
 
-import auth from './middleware/express/auth';
-import User from './routes/user';
-import Contentful from './routes/contentful';
-import { hasNewerVersion } from './utils/versionControl';
+import auth from './middleware/express/auth.js';
+import UserRoute from './routes/user.js';
+import ContentfulRoute from './routes/contentful.js';
+import NotificationRoute from './routes/notification.js';
+import { hasNewerVersion } from './utils/versionControl.js';
 
 // Constants
 const PORT = process.env.PORT || 3000;
@@ -21,16 +22,11 @@ app.use(cors());
 // JWT
 app.use(
   auth.required.unless({
-    path: ['/', '/user/login', '/crags/recursive', '/needUpdate'],
+    path: ['/', '/user/login', '/crags/recursive', '/needUpdate', 'notification'], // TODO: Remove notification
   })
 );
 
-mongoose.connect(process.env.MONGO_CONNECTION, {
-  useNewUrlParser: true,
-  useCreateIndex: true,
-  useFindAndModify: false,
-  useUnifiedTopology: true,
-});
+mongoose.connect(process.env.MONGO_CONNECTION);
 
 // Debug Mongoose
 // mongoose.set('debug', true);
@@ -40,8 +36,9 @@ app.get('/', (req, res) => {
   res.send('Hello World');
 });
 
-app.use('/user', User);
-app.use('/content', Contentful);
+app.use('/user', UserRoute);
+app.use('/content', ContentfulRoute);
+app.use('/notification', NotificationRoute);
 
 app.get('/needUpdate', (req, res) => {
   const {
@@ -76,4 +73,4 @@ app.get('/convertImage', async (req, res) => {
 });
 
 app.listen(PORT);
-console.log('Up and running');
+console.log('Up and running on http://localhost:' + PORT);
