@@ -1,4 +1,4 @@
-import jwt from 'express-jwt';
+import { expressjwt } from 'express-jwt';
 
 const getTokenFromHeaders = (req) => {
   const {
@@ -13,7 +13,7 @@ const getTokenFromHeaders = (req) => {
 };
 
 const auth = {
-  required: jwt({
+  required: expressjwt({
     secret: process.env.JWT_SECRET,
     userProperty: 'user',
     getToken: getTokenFromHeaders,
