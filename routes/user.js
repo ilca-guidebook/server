@@ -32,6 +32,10 @@ router.post('/login', async (req, res) => {
     const user = await UserModel.findOne({ idNumber: encryptedIdNumber }).exec();
 
     if (user) {
+      // Update pushToken on login
+      user.pushToken = pushToken;
+      await user.save();
+
       return res.json({ user: user.toJSON(), token: user.generateJWT() });
     }
 
