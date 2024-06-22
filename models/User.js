@@ -9,6 +9,7 @@ const UserSchema = new mongoose.Schema({
   emailAddress: { type: String },
   phoneNumber: { type: String },
   idNumber: { type: String },
+  pushToken: { type: String },
 });
 
 UserSchema.methods.generateJWT = function () {

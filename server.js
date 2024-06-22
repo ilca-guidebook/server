@@ -22,7 +22,7 @@ app.use(cors());
 // JWT
 app.use(
   auth.required.unless({
-    path: ['/', '/user/login', '/crags/recursive', '/needUpdate', 'notification'], // TODO: Remove notification
+    path: ['/', '/user/login', '/crags/recursive', '/needUpdate', '/notification'], // TODO: Remove notification
   })
 );
 

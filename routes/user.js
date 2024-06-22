@@ -8,7 +8,7 @@ const router = express.Router();
 
 router.post('/login', async (req, res) => {
   const {
-    body: { idNumber, dateOfBirth },
+    body: { idNumber, dateOfBirth, pushToken },
   } = req;
 
   if (!idNumber || !dateOfBirth) {
@@ -35,7 +35,7 @@ router.post('/login', async (req, res) => {
       return res.json({ user: user.toJSON(), token: user.generateJWT() });
     }
 
-    const newUser = new UserModel({ idNumber: encryptedIdNumber });
+    const newUser = new UserModel({ idNumber: encryptedIdNumber, pushToken });
     await newUser.save();
     return res.json({ user: newUser.toJSON(), token: newUser.generateJWT() });
   } catch (e) {
