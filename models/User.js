@@ -10,7 +10,7 @@ const UserSchema = new mongoose.Schema({
   phoneNumber: { type: String },
   idNumber: { type: String },
   pushToken: { type: String },
-  lastActiveAt: { type: Date }
+  lastActiveAt: { type: Date },
 }, { timestamps: true });
 
 UserSchema.methods.generateJWT = function () {
