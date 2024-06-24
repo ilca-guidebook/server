@@ -60,8 +60,10 @@ router.get('/', async (req, res) => {
 
   if (pushToken) {
     user.pushToken = pushToken;
-    await user.save();
   }
+
+  user.lastActiveAt = new Date();
+  await user.save();
 
   return res.json({ user: user.toJSON() });
 });
