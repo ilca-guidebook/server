@@ -50,12 +50,17 @@ router.post('/login', async (req, res) => {
 });
 
 router.get('/', async (req, res) => {
-  const { auth: { id } } = req;
+  const { auth: { id }, query: { pushToken } } = req;
 
   const user = await UserModel.findById(id);
 
   if (!user) {
     return res.sendStatus(400);
+  }
+
+  if (pushToken) {
+    user.pushToken = pushToken;
+    await user.save();
   }
 
   return res.json({ user: user.toJSON() });
