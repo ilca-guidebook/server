@@ -11,7 +11,7 @@ const UserSchema = new mongoose.Schema({
   idNumber: { type: String },
   pushToken: { type: String },
   lastActiveAt: { type: Date }
-});
+}, { timestamps: true });
 
 UserSchema.methods.generateJWT = function () {
   const today = new Date();
