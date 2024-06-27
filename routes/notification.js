@@ -5,19 +5,21 @@ import UserModel from '../models/User.js';
 
 const router = express.Router();
 
-router.get('/', async (req, res) => {
+router.post('/', async (req, res) => {
+  const {
+    body: { notificationBody },
+  } = req;
+
   const usersWithPushNotifications = await UserModel.find({ pushToken: { $ne: null } });
 
   const pushTokens = usersWithPushNotifications.map(({ pushToken }) => pushToken);
+  // const pushTokens = ['ExponentPushToken[zd49YIIReglwp2-8q4Hz1P]'];
 
   // Create a new Expo SDK client
   // optionally providing an access token if you have enabled push security
   let expo = new Expo({
-    // accessToken: process.env.EXPO_ACCESS_TOKEN,
     useFcmV1: true, // this can be set to true in order to use the FCM v1 API
   });
-
-  // const pushTokens = ['ExponentPushToken[WTEst4JK3BfFqD14QtLVOC]', 'ExponentPushToken[S3wFD8H6saGCxEJ9VMR7-I]'];
 
   // Create the messages that you want to send to clients
   let messages = [];
@@ -32,8 +34,7 @@ router.get('/', async (req, res) => {
     messages.push({
       to: pushToken,
       sound: 'default',
-      body: 'This is a test notification',
-      data: { withSome: 'data' },
+      body: notificationBody,
     });
   }
 
