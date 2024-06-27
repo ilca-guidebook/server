@@ -50,7 +50,10 @@ router.post('/login', async (req, res) => {
 });
 
 router.get('/', async (req, res) => {
-  const { auth: { id }, query: { pushToken } } = req;
+  const {
+    auth: { id },
+    query: { pushToken },
+  } = req;
 
   const user = await UserModel.findById(id);
 
