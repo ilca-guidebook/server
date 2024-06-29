@@ -40,6 +40,9 @@ app.use('/user', UserRoute);
 app.use('/content', ContentfulRoute);
 app.use('/notification', NotificationRoute);
 
+/**
+ * @deprecated
+ */
 app.get('/needUpdate', (req, res) => {
   const {
     query: { clientVersion },
