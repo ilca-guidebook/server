@@ -35,7 +35,7 @@ Start the server:
 yarn start
 ```
 
-For local client + server development, run ngrok in a separate terminal to expose the server:
+> For local testing on IOS client + server development, run ngrok in a separate terminal to expose the server:
 
 ```
 ngrok http 3000
