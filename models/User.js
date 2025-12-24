@@ -1,17 +1,27 @@
 import mongoose from 'mongoose';
 import jwt from 'jsonwebtoken';
 
-const UserSchema = new mongoose.Schema({
-  name: {
-    first: { type: String },
-    last: { type: String },
+const UserSchema = new mongoose.Schema(
+  {
+    name: {
+      first: { type: String },
+      last: { type: String },
+    },
+    emailAddress: { type: String },
+    phoneNumber: { type: String },
+    idNumber: { type: String },
+    pushToken: { type: String },
+    lastActiveAt: { type: Date },
+    favorites: [{ type: String }],
+    tickList: [
+      {
+        routeId: { type: String, required: true },
+        numOfAttempts: { type: Number, required: true, default: 1 },
+      },
+    ],
   },
-  emailAddress: { type: String },
-  phoneNumber: { type: String },
-  idNumber: { type: String },
-  pushToken: { type: String },
-  lastActiveAt: { type: Date },
-}, { timestamps: true });
+  { timestamps: true }
+);
 
 UserSchema.methods.generateJWT = function () {
   const today = new Date();
