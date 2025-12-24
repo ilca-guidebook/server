@@ -71,4 +71,215 @@ router.get('/', async (req, res) => {
   return res.json({ user: user.toJSON() });
 });
 
+router.get('/favorites', async (req, res) => {
+  const {
+    auth: { id },
+  } = req;
+
+  try {
+    const user = await UserModel.findById(id);
+    if (!user) {
+      return res.sendStatus(400);
+    }
+
+    return res.json({ favorites: user.favorites || [] });
+  } catch (e) {
+    console.log('Error fetching favorites', e);
+    return res.sendStatus(500);
+  }
+});
+
+router.post('/favorites', async (req, res) => {
+  const {
+    auth: { id },
+    body: { routeId },
+  } = req;
+
+  if (!routeId) {
+    return res.status(422).json({
+      errors: { routeId: 'is required' },
+    });
+  }
+
+  try {
+    const user = await UserModel.findById(id);
+    if (!user) {
+      return res.sendStatus(400);
+    }
+
+    if (!user.favorites) {
+      user.favorites = [];
+    }
+
+    if (!user.favorites.includes(routeId)) {
+      user.favorites.push(routeId);
+      await user.save();
+    }
+
+    return res.json({ favorites: user.favorites });
+  } catch (e) {
+    console.log('Error adding favorite', e);
+    return res.sendStatus(500);
+  }
+});
+
+router.delete('/favorites/:routeId', async (req, res) => {
+  const {
+    auth: { id },
+    params: { routeId },
+  } = req;
+
+  try {
+    const user = await UserModel.findById(id);
+    if (!user) {
+      return res.sendStatus(400);
+    }
+
+    if (user.favorites) {
+      user.favorites = user.favorites.filter((fav) => fav !== routeId);
+      await user.save();
+    }
+
+    return res.json({ favorites: user.favorites || [] });
+  } catch (e) {
+    console.log('Error removing favorite', e);
+    return res.sendStatus(500);
+  }
+});
+
+router.get('/tickList', async (req, res) => {
+  const {
+    auth: { id },
+  } = req;
+
+  try {
+    const user = await UserModel.findById(id);
+    if (!user) {
+      return res.sendStatus(400);
+    }
+
+    return res.json({ tickList: user.tickList || [] });
+  } catch (e) {
+    console.log('Error fetching tickList', e);
+    return res.sendStatus(500);
+  }
+});
+
+router.post('/tickList', async (req, res) => {
+  const {
+    auth: { id },
+    body: { routeId, numOfAttempts },
+  } = req;
+
+  if (!routeId) {
+    return res.status(422).json({
+      errors: { routeId: 'is required' },
+    });
+  }
+
+  if (numOfAttempts === undefined) {
+    return res.status(422).json({
+      errors: { numOfAttempts: 'is required' },
+    });
+  }
+
+  try {
+    const user = await UserModel.findById(id);
+    if (!user) {
+      return res.sendStatus(400);
+    }
+
+    if (!user.tickList) {
+      user.tickList = [];
+    }
+
+    // Check if route already exists in tickList
+    const existingIndex = user.tickList.findIndex((item) => item.routeId === routeId);
+
+    if (existingIndex !== -1) {
+      // Update existing entry - replace numOfAttempts
+      user.tickList[existingIndex].numOfAttempts = numOfAttempts;
+    } else {
+      // Add new entry
+      user.tickList.push({
+        routeId,
+        numOfAttempts,
+      });
+    }
+
+    await user.save();
+    return res.json({ tickList: user.tickList });
+  } catch (e) {
+    console.log('Error adding/updating tickList item', e);
+    return res.sendStatus(500);
+  }
+});
+
+router.put('/tickList/:routeId', async (req, res) => {
+  const {
+    auth: { id },
+    params: { routeId },
+    body: { numOfAttempts },
+  } = req;
+
+  if (numOfAttempts === undefined) {
+    return res.status(422).json({
+      errors: { numOfAttempts: 'is required' },
+    });
+  }
+
+  try {
+    const user = await UserModel.findById(id);
+    if (!user) {
+      return res.sendStatus(400);
+    }
+
+    if (!user.tickList) {
+      return res.status(404).json({
+        errors: { routeId: 'not found in tickList' },
+      });
+    }
+
+    const existingIndex = user.tickList.findIndex((item) => item.routeId === routeId);
+
+    if (existingIndex === -1) {
+      return res.status(404).json({
+        errors: { routeId: 'not found in tickList' },
+      });
+    }
+
+    user.tickList[existingIndex].numOfAttempts = numOfAttempts;
+    await user.save();
+
+    return res.json({ tickList: user.tickList });
+  } catch (e) {
+    console.log('Error updating tickList item', e);
+    return res.sendStatus(500);
+  }
+});
+
+router.delete('/tickList/:routeId', async (req, res) => {
+  const {
+    auth: { id },
+    params: { routeId },
+  } = req;
+
+  try {
+    const user = await UserModel.findById(id);
+    if (!user) {
+      return res.sendStatus(400);
+    }
+
+    if (user.tickList) {
+      user.tickList = user.tickList.filter((item) => item.routeId !== routeId);
+      await user.save();
+    }
+
+    return res.json({ tickList: user.tickList || [] });
+  } catch (e) {
+    console.log('Error removing tickList item', e);
+    return res.sendStatus(500);
+  }
+});
+
 export default router;
