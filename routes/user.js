@@ -1,4 +1,5 @@
 import express from 'express';
+import isNumber from 'lodash/isNumber.js';
 
 import UserModel from '../models/User.js';
 import { isUserPartOfILCA } from '../apis/loglig/index.js';
@@ -123,10 +124,10 @@ router.post('/favorites', async (req, res) => {
   }
 });
 
-router.delete('/favorites/:routeId', async (req, res) => {
+router.delete('/favorites', async (req, res) => {
   const {
     auth: { id },
-    params: { routeId },
+    body: { routeId },
   } = req;
 
   try {
@@ -177,7 +178,7 @@ router.post('/tickList', async (req, res) => {
     });
   }
 
-  if (numOfAttempts === undefined) {
+  if (!isNumber(numOfAttempts)) {
     return res.status(422).json({
       errors: { numOfAttempts: 'is required' },
     });
@@ -215,14 +216,13 @@ router.post('/tickList', async (req, res) => {
   }
 });
 
-router.put('/tickList/:routeId', async (req, res) => {
+router.put('/tickList', async (req, res) => {
   const {
     auth: { id },
-    params: { routeId },
-    body: { numOfAttempts },
+    body: { routeId, numOfAttempts },
   } = req;
 
-  if (numOfAttempts === undefined) {
+  if (!isNumber(numOfAttempts)) {
     return res.status(422).json({
       errors: { numOfAttempts: 'is required' },
     });
