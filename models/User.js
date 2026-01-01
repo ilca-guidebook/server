@@ -17,6 +17,7 @@ const UserSchema = new mongoose.Schema(
       {
         routeId: { type: String, required: true },
         numOfAttempts: { type: Number, required: true, default: 1 },
+        lastAttemptAt: { type: Date },
       },
     ],
   },
