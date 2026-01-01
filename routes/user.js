@@ -169,7 +169,7 @@ router.get('/tickList', async (req, res) => {
 router.post('/tickList', async (req, res) => {
   const {
     auth: { id },
-    body: { routeId, numOfAttempts },
+    body: { routeId, numOfAttempts, lastAttemptAt },
   } = req;
 
   if (!routeId) {
@@ -205,6 +205,7 @@ router.post('/tickList', async (req, res) => {
       user.tickList.push({
         routeId,
         numOfAttempts,
+        lastAttemptAt: lastAttemptAt || new Date(),
       });
     }
 
@@ -219,7 +220,7 @@ router.post('/tickList', async (req, res) => {
 router.put('/tickList', async (req, res) => {
   const {
     auth: { id },
-    body: { routeId, numOfAttempts },
+    body: { routeId, numOfAttempts, lastAttemptAt },
   } = req;
 
   if (!isNumber(numOfAttempts)) {
@@ -249,6 +250,7 @@ router.put('/tickList', async (req, res) => {
     }
 
     user.tickList[existingIndex].numOfAttempts = numOfAttempts;
+    user.tickList[existingIndex].lastAttemptAt = lastAttemptAt || new Date();
     await user.save();
 
     return res.json({ tickList: user.tickList });
