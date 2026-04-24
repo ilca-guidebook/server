@@ -67,10 +67,6 @@ export const extractCragsData = (crags) => {
         sectors: fields.sectors.filter(({ fields }) => !!fields).map(extractSectorsData),
       };
 
-      if (cragData.name === 'Nitzan') {
-        console.log('nitzan cragData', cragData);
-      }
-
       // Skip empty crags (no sectors)
       if (!cragData.sectors.length) {
         return null;
