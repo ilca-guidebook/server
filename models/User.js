@@ -46,6 +46,7 @@ UserSchema.methods.toJSON = function () {
     name: this.name,
     emailAddress: this.emailAddress,
     phoneNumber: this.phoneNumber,
+    avatarUrl: this.avatarUrl,
   };
 };
 

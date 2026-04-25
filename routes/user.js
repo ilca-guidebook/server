@@ -89,7 +89,7 @@ router.put('/', async (req, res) => {
     }
 
     if (lastName) {
-      user.name.last = firstName;
+      user.name.last = lastName;
     }
 
     if (avatarUrl) {
@@ -98,7 +98,7 @@ router.put('/', async (req, res) => {
 
     await user.save();
 
-    return res.sendStatus(201);
+    return res.json({ user: user.toJSON() });
   } catch (e) {
     console.log('Error updating user', e);
     return res.sendStatus(500);
