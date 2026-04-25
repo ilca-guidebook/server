@@ -7,7 +7,15 @@ const UserSchema = new mongoose.Schema(
       first: { type: String },
       last: { type: String },
     },
-    avatarUrl: { type: String },
+    avatar: {
+      publicId: { type: String },
+      crop: {
+        x: { type: Number },
+        y: { type: Number },
+        width: { type: Number },
+        height: { type: Number },
+      },
+    },
     emailAddress: { type: String },
     phoneNumber: { type: String },
     idNumber: { type: String },
@@ -46,7 +54,7 @@ UserSchema.methods.toJSON = function () {
     name: this.name,
     emailAddress: this.emailAddress,
     phoneNumber: this.phoneNumber,
-    avatarUrl: this.avatarUrl,
+    avatar: this.avatar,
   };
 };
 
