@@ -75,7 +75,7 @@ router.get('/', async (req, res) => {
 router.put('/', async (req, res) => {
   const {
     auth: { id },
-    body: { firstName, lastName, avatarUrl },
+    body: { firstName, lastName, avatar },
   } = req;
 
   try {
@@ -92,8 +92,8 @@ router.put('/', async (req, res) => {
       user.name.last = lastName;
     }
 
-    if (avatarUrl) {
-      user.avatarUrl = avatarUrl;
+    if (avatar) {
+      user.avatar = avatar;
     }
 
     await user.save();
