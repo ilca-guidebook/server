@@ -72,6 +72,39 @@ router.get('/', async (req, res) => {
   return res.json({ user: user.toJSON() });
 });
 
+router.put('/', async (req, res) => {
+  const {
+    auth: { id },
+    body: { firstName, lastName, avatarUrl },
+  } = req;
+
+  try {
+    const user = await UserModel.findById(id);
+    if (!user) {
+      return res.sendStatus(400);
+    }
+
+    if (firstName) {
+      user.name.first = firstName;
+    }
+
+    if (lastName) {
+      user.name.last = firstName;
+    }
+
+    if (avatarUrl) {
+      user.avatarUrl = avatarUrl;
+    }
+
+    await user.save();
+
+    return res.sendStatus(201);
+  } catch (e) {
+    console.log('Error updating user', e);
+    return res.sendStatus(500);
+  }
+});
+
 router.get('/favorites', async (req, res) => {
   const {
     auth: { id },
