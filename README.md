@@ -14,7 +14,7 @@ Serves content from Contentful CMS and provides APIs for user authentication, pu
 
 1. Install dependencies: `yarn install`
 2. Create `.env` file (see below)
-    a. secrets can be found here [notion link](https://www.notion.so/secrets-2caf6f02042f80f79367edf0889d75c0)
+   a. secrets can be found here [notion link](https://www.notion.so/secrets-2caf6f02042f80f79367edf0889d75c0)
 3. Start server: `yarn start`
 
 ### Required `.env` file format
@@ -31,7 +31,7 @@ accessToken=<contentful_access_token>
 
 Start the server:
 
-``` 
+```
 yarn start
 ```
 
@@ -40,20 +40,3 @@ yarn start
 ```
 ngrok http 3000
 ```
-
-### Initial Data seed
-
-run:
-
-> ./devScripts/data_seed.sh
-
-## running scripts on the server
-
-For performing or adding tasks such as data migrations we have a devel.js file in the devSCripts.
-to run a specific task either connect to the running docker container or run:
-
-> devScripts/run_dev_script.sh <command>
-
-For example:
-
-> devScripts/run_dev_script.sh health
