@@ -8,7 +8,7 @@ const FavoriteSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-FavoriteSchema.index({ userId: 1 }, { unique: true });
+FavoriteSchema.index({ userId: 1, routeId: 1 }, { unique: true });
 
 FavoriteSchema.methods.toJSON = function () {
   return {

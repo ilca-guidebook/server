@@ -1,3 +1,4 @@
+// TODO: cleanup - db.users.updateMany({}, { $unset: { favorites: "", tickList: "" } })
 import mongoose from 'mongoose';
 import jwt from 'jsonwebtoken';
 
