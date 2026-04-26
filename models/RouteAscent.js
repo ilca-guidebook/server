@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import moment from 'moment';
 
 export const ASCENT_TYPES = ['onsight', 'flash', 'redpoint'];
 
@@ -21,7 +22,7 @@ RouteAscentSchema.methods.toJSON = function () {
     userId: this.userId,
     routeId: this.routeId,
     numOfAttempts: this.numOfAttempts,
-    ascentDate: this.ascentDate,
+    ascentDate: moment.utc(this.ascentDate).format('YYYY-MM-DD'),
     ascentType: this.ascentType,
     stars: this.stars,
     comment: this.comment,

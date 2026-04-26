@@ -1,29 +1,19 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import isNumber from 'lodash/isNumber.js';
+import moment from 'moment';
 
 import RouteAscentModel, { ASCENT_TYPES } from '../models/RouteAscent.js';
 
 const router = express.Router({ mergeParams: true });
 
-const ensureSelf = (req, res, next) => {
-  const {
-    auth: { id },
-    params: { userId },
-  } = req;
-
-  if (id !== userId) {
-    return res.sendStatus(403);
-  }
-
-  return next();
+const normalizeAscentDate = (date) => {
+  return moment.utc(date, 'YYYY-MM-DD').startOf('day').toDate();
 };
 
-router.use('/:userId', ensureSelf);
-
-router.get('/:userId', async (req, res) => {
+router.get('/', async (req, res) => {
   const {
-    params: { userId },
+    auth: { id: userId },
   } = req;
 
   try {
@@ -35,9 +25,9 @@ router.get('/:userId', async (req, res) => {
   }
 });
 
-router.post('/:userId', async (req, res) => {
+router.post('/', async (req, res) => {
   const {
-    params: { userId },
+    auth: { id: userId },
     body: { routeId, numOfAttempts, ascentDate, ascentType, stars, comment },
   } = req;
 
@@ -62,7 +52,7 @@ router.post('/:userId', async (req, res) => {
       userId,
       routeId,
       numOfAttempts,
-      ascentDate,
+      ascentDate: normalizeAscentDate(ascentDate),
       ascentType,
       stars,
       comment,
@@ -75,9 +65,10 @@ router.post('/:userId', async (req, res) => {
   }
 });
 
-router.put('/:userId/:ascentId', async (req, res) => {
+router.put('/:ascentId', async (req, res) => {
   const {
-    params: { userId, ascentId },
+    auth: { id: userId },
+    params: { ascentId },
     body: { routeId, numOfAttempts, ascentDate, ascentType, stars, comment },
   } = req;
 
@@ -103,7 +94,7 @@ router.put('/:userId/:ascentId', async (req, res) => {
 
     if (routeId !== undefined) ascent.routeId = routeId;
     if (numOfAttempts !== undefined) ascent.numOfAttempts = numOfAttempts;
-    if (ascentDate !== undefined) ascent.ascentDate = ascentDate;
+    if (ascentDate !== undefined) ascent.ascentDate = normalizeAscentDate(ascentDate);
     if (ascentType !== undefined) ascent.ascentType = ascentType;
     if (stars !== undefined) ascent.stars = stars;
     if (comment !== undefined) ascent.comment = comment;
@@ -116,9 +107,10 @@ router.put('/:userId/:ascentId', async (req, res) => {
   }
 });
 
-router.delete('/:userId/:ascentId', async (req, res) => {
+router.delete('/:ascentId', async (req, res) => {
   const {
-    params: { userId, ascentId },
+    auth: { id: userId },
+    params: { ascentId },
   } = req;
 
   if (!mongoose.isValidObjectId(ascentId)) {
