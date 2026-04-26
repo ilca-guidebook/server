@@ -17,10 +17,10 @@ router.post('/login', async (req, res) => {
     });
   }
 
-  const isGooglePlayDemo =
-    idNumber === process.env.GOOGLE_PLAY_DEMO_USER && dateOfBirth === process.env.GOOGLE_PLAY_DEMO_BIRTH;
+  const testAccounts = JSON.parse(process.env.TEST_ACCOUNTS || '[]');
+  const isTestAccount = testAccounts.includes(idNumber);
 
-  if (!isGooglePlayDemo) {
+  if (!isTestAccount) {
     const isIlcaMember = await isUserPartOfILCA(idNumber, dateOfBirth);
     if (!isIlcaMember) {
       return res.sendStatus(400);
