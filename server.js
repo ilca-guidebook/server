@@ -8,6 +8,7 @@ import auth from './middleware/express/auth.js';
 import UserRoute from './routes/user.js';
 import ContentfulRoute from './routes/contentful.js';
 import NotificationRoute from './routes/notification.js';
+import RouteAscentRoute from './routes/routeAscent.js';
 import { hasNewerVersion } from './utils/versionControl.js';
 
 // Constants
@@ -39,6 +40,7 @@ app.get('/', (req, res) => {
 app.use('/user', UserRoute);
 app.use('/content', ContentfulRoute);
 app.use('/notification', NotificationRoute);
+app.use('/ascents', RouteAscentRoute);
 
 /**
  * @deprecated
