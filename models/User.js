@@ -22,7 +22,6 @@ const UserSchema = new mongoose.Schema(
     idNumber: { type: String },
     pushToken: { type: String },
     lastActiveAt: { type: Date },
-    favorites: [{ type: String }],
   },
   { timestamps: true }
 );
