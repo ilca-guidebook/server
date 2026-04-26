@@ -164,6 +164,7 @@ router.delete('/favorites', async (req, res) => {
 
   try {
     const user = await UserModel.findById(id);
+
     if (!user) {
       return res.sendStatus(400);
     }
