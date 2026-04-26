@@ -14,6 +14,7 @@ const UserSchema = new mongoose.Schema(
         y: { type: Number },
         width: { type: Number },
         height: { type: Number },
+        zoom: { type: Number },
       },
     },
     emailAddress: { type: String },
@@ -22,13 +23,6 @@ const UserSchema = new mongoose.Schema(
     pushToken: { type: String },
     lastActiveAt: { type: Date },
     favorites: [{ type: String }],
-    tickList: [
-      {
-        routeId: { type: String, required: true },
-        numOfAttempts: { type: Number, required: true, default: 1 },
-        lastAttemptAt: { type: Date },
-      },
-    ],
   },
   { timestamps: true }
 );
