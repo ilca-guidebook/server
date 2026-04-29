@@ -131,9 +131,9 @@ router.delete('/:ascentId', async (req, res) => {
   }
 });
 
-router.get('/getByRouteId', async (req, res) => {
+router.get('/getByRouteId/:routeId', async (req, res) => {
   const {
-    body: { routeId },
+    params: { routeId },
   } = req;
 
   try {

@@ -4,9 +4,9 @@ import UserModel from '../models/User.js';
 
 const router = express.Router();
 
-router.get('/getById', async (req, res) => {
+router.get('/getById/:userId', async (req, res) => {
   const {
-    body: { userId },
+    params: { userId },
   } = req;
 
   const user = await UserModel.findById(userId);
@@ -18,7 +18,7 @@ router.get('/getById', async (req, res) => {
   return res.json({ user: user.toJSONView() });
 });
 
-router.get('/getByIds', async (req, res) => {
+router.post('/getByIds', async (req, res) => {
   const {
     body: { ids },
   } = req;
