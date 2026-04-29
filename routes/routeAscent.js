@@ -131,18 +131,4 @@ router.delete('/:ascentId', async (req, res) => {
   }
 });
 
-router.get('/getByRouteId', async (req, res) => {
-  const {
-    body: { routeId },
-  } = req;
-
-  try {
-    const ascents = await RouteAscentModel.find({ routeId }).sort({ ascentDate: -1 });
-    return res.json({ ascents: ascents.map((a) => a.toJSON()) });
-  } catch (e) {
-    console.log(`Error fetching ascents for routeId: "${routeId}"`, e);
-    return res.sendStatus(500);
-  }
-});
-
 export default router;
