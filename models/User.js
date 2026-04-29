@@ -52,4 +52,11 @@ UserSchema.methods.toJSON = function () {
   };
 };
 
+UserSchema.methods.toJSONView = function () {
+  return {
+    name: this.name,
+    avatar: this.avatar,
+  };
+};
+
 export default mongoose.model('User', UserSchema);
