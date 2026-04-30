@@ -54,6 +54,7 @@ UserSchema.methods.toJSON = function () {
 
 UserSchema.methods.toJSONView = function () {
   return {
+    id: this._id,
     name: this.name,
     avatar: this.avatar,
   };
