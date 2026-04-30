@@ -92,14 +92,32 @@ router.put('/:ascentId', async (req, res) => {
       return res.sendStatus(404);
     }
 
-    if (routeId !== undefined) ascent.routeId = routeId;
-    if (numOfAttempts !== undefined) ascent.numOfAttempts = numOfAttempts;
-    if (ascentDate !== undefined) ascent.ascentDate = normalizeAscentDate(ascentDate);
-    if (ascentType !== undefined) ascent.ascentType = ascentType;
-    if (stars !== undefined) ascent.stars = stars;
-    if (comment !== undefined) ascent.comment = comment;
+    if (routeId !== undefined) {
+      ascent.routeId = routeId;
+    }
+
+    if (numOfAttempts !== undefined) {
+      ascent.numOfAttempts = numOfAttempts;
+    }
+
+    if (ascentDate !== undefined) {
+      ascent.ascentDate = normalizeAscentDate(ascentDate);
+    }
+
+    if (ascentType !== undefined) {
+      ascent.ascentType = ascentType;
+    }
+
+    if (stars !== undefined) {
+      ascent.stars = stars;
+    }
+
+    if (comment !== undefined) {
+      ascent.comment = comment;
+    }
 
     await ascent.save();
+
     return res.json({ ascent: ascent.toJSON() });
   } catch (e) {
     console.log('Error updating ascent', e);
