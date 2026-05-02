@@ -1,7 +1,12 @@
 import mongoose from 'mongoose';
 import moment from 'moment';
 
-export const RIDE_ROLES = ['can-pickup', 'needs-ride', 'self'];
+export const ERIDE_ROLE = {
+  CAN_PICKUP: 'can-pickup',
+  NEEDS_RIDE: 'needs-ride',
+  SELF: 'self',
+};
+export const RIDE_ROLES = [ERIDE_ROLE.CAN_PICKUP, ERIDE_ROLE.NEEDS_RIDE, ERIDE_ROLE.SELF];
 export const PARTNER_SEARCH_STATUSES = ['active', 'matched'];
 
 const PartnerSearchSchema = new mongoose.Schema(
@@ -12,7 +17,7 @@ const PartnerSearchSchema = new mongoose.Schema(
     leaveHomeHour: { type: String, required: true },
     leaveCragHour: { type: String, required: true },
     rideRole: { type: String, enum: RIDE_ROLES, required: true },
-    leaveFromAddress: { type: String, required: true },
+    leaveFromAddress: { type: String },
     status: { type: String, enum: PARTNER_SEARCH_STATUSES, default: 'active', index: true },
     matchedWithUserId: { type: String },
   },

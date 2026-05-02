@@ -74,7 +74,7 @@ router.get('/', async (req, res) => {
 router.put('/', async (req, res) => {
   const {
     auth: { id },
-    body: { firstName, lastName, avatar },
+    body: { firstName, lastName, phoneNumber, avatar },
   } = req;
 
   try {
@@ -89,6 +89,10 @@ router.put('/', async (req, res) => {
 
     if (lastName) {
       user.name.last = lastName;
+    }
+
+    if (phoneNumber) {
+      user.phoneNumber = phoneNumber;
     }
 
     if (avatar) {
