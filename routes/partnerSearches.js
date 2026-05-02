@@ -2,7 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import moment from 'moment';
 
-import PartnerSearchModel, { RIDE_ROLES } from '../models/PartnerSearch.js';
+import PartnerSearchModel, { RIDE_ROLES, ERIDE_ROLE } from '../models/PartnerSearch.js';
 import PartnerRequestModel from '../models/PartnerRequest.js';
 
 const router = express.Router({ mergeParams: true });
@@ -26,7 +26,7 @@ const validateSearchInput = (body) => {
     errors.rideRole = 'is invalid';
   }
 
-  if (!leaveFromAddress || typeof leaveFromAddress !== 'string' || !leaveFromAddress.trim()) {
+  if (rideRole !== ERIDE_ROLE.SELF && (!leaveFromAddress || !leaveFromAddress.trim())) {
     errors.leaveFromAddress = 'is required';
   }
 
@@ -87,6 +87,7 @@ router.post('/', async (req, res) => {
   } = req;
 
   const errors = validateSearchInput(body);
+
   if (errors) {
     return res.status(422).json({ errors });
   }
