@@ -195,6 +195,8 @@ router.delete('/:id', async (req, res) => {
     return res.sendStatus(404);
   }
 
+  const session = await mongoose.startSession();
+
   try {
     const request = await PartnerRequestModel.findById(id);
 
@@ -206,11 +208,22 @@ router.delete('/:id', async (req, res) => {
       return res.sendStatus(403);
     }
 
-    await PartnerRequestModel.deleteOne({ _id: request._id });
+    const search = await PartnerSearchModel.findById(request.searchId);
+
+    await session.withTransaction(async () => {
+      search.status = 'active';
+      search.matchedWithUserId = null;
+      await search.save({ session });
+
+      await PartnerRequestModel.deleteOne({ _id: request._id });
+    });
+
     return res.sendStatus(204);
   } catch (e) {
     console.log('Error deleting partner request', e);
     return res.sendStatus(500);
+  } finally {
+    session.endSession();
   }
 });
 
