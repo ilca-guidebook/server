@@ -2,7 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import moment from 'moment';
 
-import PartnerSearchModel, { RIDE_ROLES, ERIDE_ROLE } from '../models/PartnerSearch.js';
+import PartnerSearchModel, { RIDE_ROLES, ERIDE_ROLE, TPartnerSearchStatus } from '../models/PartnerSearch.js';
 import PartnerRequestModel from '../models/PartnerRequest.js';
 
 const router = express.Router({ mergeParams: true });
@@ -50,7 +50,7 @@ router.get('/', async (req, res) => {
     const today = moment.utc().format('YYYY-MM-DD');
 
     const searches = await PartnerSearchModel.find({
-      status: 'active',
+      status: TPartnerSearchStatus.ACTIVE,
       date: { $gte: today },
       userId: { $ne: userId },
     }).sort({ createdAt: -1 });
@@ -58,22 +58,6 @@ router.get('/', async (req, res) => {
     return res.json({ searches: searches.map((s) => s.toJSON()) });
   } catch (e) {
     console.log('Error fetching partner searches', e);
-    return res.sendStatus(500);
-  }
-});
-
-router.get('/:id', async (req, res) => {
-  const {
-    auth: { id: userId },
-    params: { id },
-  } = req;
-
-  try {
-    const search = await PartnerSearchModel.findById(id);
-
-    return res.json({ search: search.toJSON() });
-  } catch (e) {
-    console.log('Error fetching search by id', e);
     return res.sendStatus(500);
   }
 });
@@ -86,7 +70,6 @@ router.get('/me', async (req, res) => {
   try {
     const search = await PartnerSearchModel.findOne({
       userId,
-      status: { $in: ['active', 'matched'] },
     });
 
     return res.json({ search: search ? search.toJSON() : null });
@@ -111,7 +94,6 @@ router.post('/', async (req, res) => {
   try {
     const existing = await PartnerSearchModel.findOne({
       userId,
-      status: { $in: ['active', 'matched'] },
     });
 
     if (existing) {
@@ -126,7 +108,7 @@ router.post('/', async (req, res) => {
       leaveCragHour: body.leaveCragHour,
       rideRole: body.rideRole,
       leaveFromAddress: body.leaveFromAddress,
-      status: 'active',
+      status: TPartnerSearchStatus.ACTIVE,
     });
 
     await search.save();
@@ -136,6 +118,22 @@ router.post('/', async (req, res) => {
       return res.status(409).json({ error: 'search already exists' });
     }
     console.log('Error creating partner search', e);
+    return res.sendStatus(500);
+  }
+});
+
+router.get('/:id', async (req, res) => {
+  const {
+    auth: { id: userId },
+    params: { id },
+  } = req;
+
+  try {
+    const search = await PartnerSearchModel.findById(id);
+
+    return res.json({ search: search.toJSON() });
+  } catch (e) {
+    console.log('Error fetching search by id', e);
     return res.sendStatus(500);
   }
 });
@@ -167,7 +165,7 @@ router.put('/:id', async (req, res) => {
       return res.sendStatus(403);
     }
 
-    if (search.status === 'matched') {
+    if (search.status === TPartnerSearchStatus.MATCHED) {
       return res.status(409).json({ error: 'cannot edit a matched search' });
     }
 
