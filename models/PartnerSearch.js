@@ -6,8 +6,12 @@ export const ERIDE_ROLE = {
   NEEDS_RIDE: 'needs-ride',
   SELF: 'self',
 };
+export const TPartnerSearchStatus = {
+  ACTIVE: 'active',
+  MATCHED: 'matched',
+};
 export const RIDE_ROLES = [ERIDE_ROLE.CAN_PICKUP, ERIDE_ROLE.NEEDS_RIDE, ERIDE_ROLE.SELF];
-export const PARTNER_SEARCH_STATUSES = ['active', 'matched'];
+export const PARTNER_SEARCH_STATUSES = [TPartnerSearchStatus.ACTIVE, TPartnerSearchStatus.MATCHED];
 
 const PartnerSearchSchema = new mongoose.Schema(
   {
@@ -28,7 +32,7 @@ PartnerSearchSchema.index(
   { userId: 1 },
   {
     unique: true,
-    partialFilterExpression: { status: { $in: ['active', 'matched'] } },
+    partialFilterExpression: { status: { $in: [TPartnerSearchStatus.ACTIVE, TPartnerSearchStatus.MATCHED] } },
   }
 );
 
