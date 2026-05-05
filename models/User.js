@@ -57,6 +57,7 @@ UserSchema.methods.toJSONView = function () {
     id: this._id,
     name: this.name,
     avatar: this.avatar,
+    phoneNumber: this.phoneNumber,
   };
 };
 
