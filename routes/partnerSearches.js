@@ -62,6 +62,22 @@ router.get('/', async (req, res) => {
   }
 });
 
+router.get('/:id', async (req, res) => {
+  const {
+    auth: { id: userId },
+    params: { id },
+  } = req;
+
+  try {
+    const search = await PartnerSearchModel.findById(id);
+
+    return res.json({ search: search.toJSON() });
+  } catch (e) {
+    console.log('Error fetching search by id', e);
+    return res.sendStatus(500);
+  }
+});
+
 router.get('/me', async (req, res) => {
   const {
     auth: { id: userId },
