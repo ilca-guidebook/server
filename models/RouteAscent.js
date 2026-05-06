@@ -29,4 +29,13 @@ RouteAscentSchema.methods.toJSON = function () {
   };
 };
 
+RouteAscentSchema.methods.toCommentsJSON = function () {
+  return {
+    userId: this.userId,
+    routeId: this.routeId,
+    stars: this.stars,
+    comment: this.comment,
+  };
+};
+
 export default mongoose.model('RouteAscent', RouteAscentSchema);
