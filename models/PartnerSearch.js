@@ -24,6 +24,7 @@ const PartnerSearchSchema = new mongoose.Schema(
     leaveFromAddress: { type: String },
     status: { type: String, enum: PARTNER_SEARCH_STATUSES, default: 'active', index: true },
     matchedWithUserId: { type: String },
+    freeText: { type: String },
   },
   { timestamps: true }
 );

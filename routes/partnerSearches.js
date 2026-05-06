@@ -108,6 +108,7 @@ router.post('/', async (req, res) => {
       leaveCragHour: body.leaveCragHour,
       rideRole: body.rideRole,
       leaveFromAddress: body.leaveFromAddress,
+      freeText: body.freeText,
       status: TPartnerSearchStatus.ACTIVE,
     });
 
@@ -175,6 +176,7 @@ router.put('/:id', async (req, res) => {
     search.leaveCragHour = body.leaveCragHour;
     search.rideRole = body.rideRole;
     search.leaveFromAddress = body.leaveFromAddress;
+    search.freeText = body.freeText;
 
     await search.save();
     return res.json({ search: search.toJSON() });

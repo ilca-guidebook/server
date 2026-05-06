@@ -55,8 +55,11 @@ export const extractCragsData = (crags) => {
       const cragFeatures = {
         rockType: fields.rockType,
         routesLength: fields.routesLength,
+        ropeLength: fields.ropeLength,
         season: fields.season,
         shade: fields.shade,
+        shadeHoursStart: fields.shadeHoursStart,
+        shadeHoursEnd: fields.shadeHoursEnd,
         cellularCoverage: fields.cellularCoverage,
       };
 
