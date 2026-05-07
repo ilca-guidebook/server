@@ -65,7 +65,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-router.post('/allCommentsByRouteIds', async (req, res) => {
+router.post('/byRouteIds', async (req, res) => {
   const {
     body: { ids },
   } = req;
@@ -75,7 +75,7 @@ router.post('/allCommentsByRouteIds', async (req, res) => {
 
     return res.json({ ascents: ascents.map((a) => a.toJSON()) });
   } catch (e) {
-    console.log(`Error fetching ascents for routeId: "${routeId}"`, e);
+    console.log(`Error fetching ascents for routes: "${ids.join(',')}"`, e);
     return res.sendStatus(500);
   }
 });
@@ -160,20 +160,6 @@ router.delete('/:ascentId', async (req, res) => {
     return res.sendStatus(204);
   } catch (e) {
     console.log('Error deleting ascent', e);
-    return res.sendStatus(500);
-  }
-});
-
-router.get('/getByRouteId/:routeId', async (req, res) => {
-  const {
-    params: { routeId },
-  } = req;
-
-  try {
-    const ascents = await RouteAscentModel.find({ routeId }).sort({ ascentDate: -1 });
-    return res.json({ ascents: ascents.map((a) => a.toJSON()) });
-  } catch (e) {
-    console.log(`Error fetching ascents for routeId: "${routeId}"`, e);
     return res.sendStatus(500);
   }
 });
