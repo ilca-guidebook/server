@@ -10,6 +10,7 @@ import ContentfulRoute from './routes/contentful.js';
 import NotificationRoute from './routes/notification.js';
 import RouteAscentRoute from './routes/routeAscent.js';
 import FavoritesRoute from './routes/favorites.js';
+import CragFavoritesRoute from './routes/cragFavorites.js';
 import PartnerRequestsRoute from './routes/partnerRequests.js';
 import PartnerSearchesRoute from './routes/partnerSearches.js';
 import { hasNewerVersion } from './utils/versionControl.js';
@@ -46,6 +47,7 @@ app.use('/content', ContentfulRoute);
 app.use('/notification', NotificationRoute);
 app.use('/ascents', RouteAscentRoute);
 app.use('/favorites', FavoritesRoute);
+app.use('/crag-favorites', CragFavoritesRoute);
 app.use('/partner-requests', PartnerRequestsRoute);
 app.use('/partner-searches', PartnerSearchesRoute);
 
