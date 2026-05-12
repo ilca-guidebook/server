@@ -74,7 +74,7 @@ router.get('/', async (req, res) => {
 router.put('/', async (req, res) => {
   const {
     auth: { id },
-    body: { firstName, lastName, phoneNumber, avatar },
+    body: { firstName, lastName, phoneNumber, avatar, pushToken },
   } = req;
 
   try {
@@ -97,6 +97,10 @@ router.put('/', async (req, res) => {
 
     if (avatar) {
       user.avatar = avatar;
+    }
+
+    if (pushToken) {
+      user.pushToken = pushToken;
     }
 
     await user.save();
