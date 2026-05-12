@@ -3,6 +3,11 @@ import mongoose from 'mongoose';
 
 import PartnerRequestModel from '../models/PartnerRequest.js';
 import PartnerSearchModel from '../models/PartnerSearch.js';
+import {
+  notifyRequestAccepted,
+  notifyRequestDeclined,
+  notifyRequestReceived,
+} from '../utils/notifications.js';
 
 const router = express.Router({ mergeParams: true });
 
@@ -53,6 +58,13 @@ router.post('/', async (req, res) => {
     });
 
     await request.save();
+
+    await notifyRequestReceived({
+      recipientId: request.recipientId,
+      requestId: request._id,
+      searchId: request.searchId,
+    });
+
     return res.json({ request: request.toJSON() });
   } catch (e) {
     console.log('Error creating partner request', e);
@@ -139,6 +151,12 @@ router.put('/:id/accept', async (req, res) => {
       );
     });
 
+    await notifyRequestAccepted({
+      requesterId: request.requesterId,
+      requestId: request._id,
+      searchId: request.searchId,
+    });
+
     return res.json({ search: search.toJSON(), request: request.toJSON() });
   } catch (e) {
     console.log('Error accepting partner request', e);
@@ -177,6 +195,12 @@ router.put('/:id/decline', async (req, res) => {
 
     request.status = 'declined';
     await request.save();
+
+    await notifyRequestDeclined({
+      requesterId: request.requesterId,
+      requestId: request._id,
+      searchId: request.searchId,
+    });
 
     return res.json({ request: request.toJSON() });
   } catch (e) {
