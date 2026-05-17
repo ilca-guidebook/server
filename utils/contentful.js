@@ -63,22 +63,32 @@ export const extractCragsData = (crags) => {
         cellularCoverage: fields.cellularCoverage,
       };
 
+      const sectors = fields.sectors.filter(({ fields }) => !!fields).map(extractSectorsData);
+
+      // Skip empty crags (no sectors)
+      if (!sectors.length) {
+        return null;
+      }
+
       const cragData = {
         id,
         ...fields,
         cragFeatures,
-        sectors: fields.sectors.filter(({ fields }) => !!fields).map(extractSectorsData),
+        sectors,
       };
 
-      // Skip empty crags (no sectors)
-      if (!cragData.sectors.length) {
-        return null;
-      }
-
-      const { coverImage: { fields: { file: { url: coverImageUrl } = {} } = {} } = {}, galleryImages } = fields;
+      const {
+        coverImage: { fields: { file: { url: coverImageUrl } = {} } = {} } = {},
+        galleryImages,
+        sectorsMap: { fields: { file: { url: sectorsMapUrl } = {} } = {} } = {},
+      } = fields;
 
       if (coverImageUrl) {
         cragData.coverImage = `https:${coverImageUrl}`;
+      }
+
+      if (sectorsMapUrl) {
+        cragData.sectorsMap = `https:${sectorsMapUrl}`;
       }
 
       if (galleryImages && galleryImages.length) {
