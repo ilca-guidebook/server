@@ -95,8 +95,10 @@ router.post('/', async (req, res) => {
   }
 
   try {
+    const today = moment.utc().format('YYYY-MM-DD');
     const existing = await PartnerSearchModel.findOne({
       userId,
+      date: { $gte: today },
     });
 
     if (existing) {
