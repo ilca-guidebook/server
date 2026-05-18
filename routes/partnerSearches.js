@@ -68,8 +68,11 @@ router.get('/me', async (req, res) => {
   } = req;
 
   try {
+    const today = moment.utc().format('YYYY-MM-DD');
+
     const search = await PartnerSearchModel.findOne({
       userId,
+      date: { $gte: today },
     });
 
     return res.json({ search: search ? search.toJSON() : null });
@@ -210,8 +213,8 @@ router.delete('/:id', async (req, res) => {
     }
 
     await session.withTransaction(async () => {
+      await search.deleteOne({ session });
       await PartnerRequestModel.deleteMany({ searchId: id }, { session });
-      await PartnerSearchModel.deleteOne({ _id: id }, { session });
     });
 
     return res.sendStatus(204);

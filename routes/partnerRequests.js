@@ -1,13 +1,10 @@
 import express from 'express';
 import mongoose from 'mongoose';
+import moment from 'moment';
 
 import PartnerRequestModel from '../models/PartnerRequest.js';
 import PartnerSearchModel from '../models/PartnerSearch.js';
-import {
-  notifyRequestAccepted,
-  notifyRequestDeclined,
-  notifyRequestReceived,
-} from '../utils/notifications.js';
+import { notifyRequestAccepted, notifyRequestDeclined, notifyRequestReceived } from '../utils/notifications.js';
 
 const router = express.Router({ mergeParams: true });
 
@@ -78,12 +75,22 @@ router.get('/incoming', async (req, res) => {
   } = req;
 
   try {
+    const today = moment.utc().format('YYYY-MM-DD');
+
     const requests = await PartnerRequestModel.find({
       recipientId: userId,
       status: 'pending',
     }).sort({ createdAt: -1 });
 
-    return res.json({ requests: requests.map((r) => r.toJSON()) });
+    const searchIds = requests.map((r) => r.searchId);
+    const activeSearches = await PartnerSearchModel.find(
+      { _id: { $in: searchIds }, date: { $gte: today } },
+      '_id'
+    );
+    const activeSearchIdSet = new Set(activeSearches.map((s) => s._id.toString()));
+    const filtered = requests.filter((r) => activeSearchIdSet.has(r.searchId));
+
+    return res.json({ requests: filtered.map((r) => r.toJSON()) });
   } catch (e) {
     console.log('Error fetching incoming partner requests', e);
     return res.sendStatus(500);
@@ -96,11 +103,21 @@ router.get('/outgoing', async (req, res) => {
   } = req;
 
   try {
-    const requests = await PartnerRequestModel.find({ requesterId: userId }).sort({
-      createdAt: -1,
-    });
+    const today = moment.utc().format('YYYY-MM-DD');
 
-    return res.json({ requests: requests.map((r) => r.toJSON()) });
+    const requests = await PartnerRequestModel.find({
+      requesterId: userId,
+    }).sort({ createdAt: -1 });
+
+    const searchIds = requests.map((r) => r.searchId);
+    const activeSearches = await PartnerSearchModel.find(
+      { _id: { $in: searchIds }, date: { $gte: today } },
+      '_id'
+    );
+    const activeSearchIdSet = new Set(activeSearches.map((s) => s._id.toString()));
+    const filtered = requests.filter((r) => activeSearchIdSet.has(r.searchId));
+
+    return res.json({ requests: filtered.map((r) => r.toJSON()) });
   } catch (e) {
     console.log('Error fetching outgoing partner requests', e);
     return res.sendStatus(500);
