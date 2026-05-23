@@ -29,12 +29,14 @@ export const notifyRequestReceived = async ({ recipientId, requestId, searchId }
 export const notifyRequestAccepted = async ({ requesterId, requestId, searchId }) => {
   try {
     const user = await UserModel.findById(requesterId).select('pushToken').lean();
-    if (!user?.pushToken) return;
-    await sendPush({
-      to: user.pushToken,
-      body: "🤙 You're on! Your climbing partner accepted your request.",
-      data: { type: 'request_accepted', requestId: String(requestId), searchId: String(searchId) },
-    });
+
+    if (user?.pushToken) {
+      await sendPush({
+        to: user.pushToken,
+        body: "🤙 You're on! Your climbing partner accepted your request.",
+        data: { type: 'request_accepted', requestId: String(requestId), searchId: String(searchId) },
+      });
+    }
   } catch (err) {
     console.error('[notifications] notifyRequestAccepted failed', err);
   }

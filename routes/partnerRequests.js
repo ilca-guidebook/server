@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 import moment from 'moment';
 
 import PartnerRequestModel from '../models/PartnerRequest.js';
-import PartnerSearchModel from '../models/PartnerSearch.js';
+import PartnerSearchModel, { TPartnerSearchStatus } from '../models/PartnerSearch.js';
 import { notifyRequestAccepted, notifyRequestDeclined, notifyRequestReceived } from '../utils/notifications.js';
 
 const router = express.Router({ mergeParams: true });
@@ -83,10 +83,7 @@ router.get('/incoming', async (req, res) => {
     }).sort({ createdAt: -1 });
 
     const searchIds = requests.map((r) => r.searchId);
-    const activeSearches = await PartnerSearchModel.find(
-      { _id: { $in: searchIds }, date: { $gte: today } },
-      '_id'
-    );
+    const activeSearches = await PartnerSearchModel.find({ _id: { $in: searchIds }, date: { $gte: today } }, '_id');
     const activeSearchIdSet = new Set(activeSearches.map((s) => s._id.toString()));
     const filtered = requests.filter((r) => activeSearchIdSet.has(r.searchId));
 
@@ -110,10 +107,7 @@ router.get('/outgoing', async (req, res) => {
     }).sort({ createdAt: -1 });
 
     const searchIds = requests.map((r) => r.searchId);
-    const activeSearches = await PartnerSearchModel.find(
-      { _id: { $in: searchIds }, date: { $gte: today } },
-      '_id'
-    );
+    const activeSearches = await PartnerSearchModel.find({ _id: { $in: searchIds }, date: { $gte: today } }, '_id');
     const activeSearchIdSet = new Set(activeSearches.map((s) => s._id.toString()));
     const filtered = requests.filter((r) => activeSearchIdSet.has(r.searchId));
 
@@ -124,9 +118,16 @@ router.get('/outgoing', async (req, res) => {
   }
 });
 
+/**
+ * Accepts a request on a search.
+ * User A posted a search, and user B sent a request.
+ * User A accepts the request.
+ * All other pending requests for the same search are declined.
+ * User A's pending requests for other searches are deleted as well.
+ */
 router.put('/:id/accept', async (req, res) => {
   const {
-    auth: { id: userId },
+    auth: { id: recipientId },
     params: { id },
   } = req;
 
@@ -143,36 +144,56 @@ router.put('/:id/accept', async (req, res) => {
       return res.sendStatus(404);
     }
 
-    const search = await PartnerSearchModel.findById(request.searchId);
+    const { requesterId, searchId, status: requestStatus, _id: requestId } = request;
+
+    const search = await PartnerSearchModel.findById(searchId);
 
     if (!search) {
       return res.sendStatus(404);
     }
 
-    if (search.userId !== userId) {
+    if (search.userId !== recipientId) {
       return res.sendStatus(403);
     }
 
     await session.withTransaction(async () => {
       search.status = 'matched';
-      search.matchedWithUserId = request.requesterId;
+      search.matchedWithUserId = requesterId;
       await search.save({ session });
 
       request.status = 'accepted';
       await request.save({ session });
 
+      // Decline all other pending requests for the same search.
       await PartnerRequestModel.updateMany(
-        { searchId: request.searchId, _id: { $ne: request._id }, status: 'pending' },
+        { searchId, _id: { $ne: request._id }, status: 'pending' },
         { $set: { status: 'declined' } },
+        { session }
+      );
+
+      // Delete all other pending requests for the requester (in case they also sent requests)
+      await PartnerRequestModel.deleteMany({ requesterId, _id: { $ne: request._id }, status: 'pending' }, { session });
+
+      // Delete active search on the same date for the requester (in case they also posted a search for the same date)
+      await PartnerSearchModel.deleteOne(
+        { userId: requesterId, status: TPartnerSearchStatus.ACTIVE, date: search.date },
+        { session }
+      );
+
+      // Delete all other pending requests for the recipient (if they sent any)
+      await PartnerRequestModel.deleteMany(
+        { recipientId: requesterId, _id: { $ne: request._id }, status: 'pending' },
         { session }
       );
     });
 
     await notifyRequestAccepted({
-      requesterId: request.requesterId,
-      requestId: request._id,
-      searchId: request.searchId,
+      requesterId,
+      requestId,
+      searchId,
     });
+
+    // TODO: Notify declined requests as well.
 
     return res.json({ search: search.toJSON(), request: request.toJSON() });
   } catch (e) {
@@ -185,7 +206,7 @@ router.put('/:id/accept', async (req, res) => {
 
 router.put('/:id/decline', async (req, res) => {
   const {
-    auth: { id: userId },
+    auth: { id: searcherId },
     params: { id },
   } = req;
 
@@ -206,7 +227,7 @@ router.put('/:id/decline', async (req, res) => {
       return res.sendStatus(404);
     }
 
-    if (search.userId !== userId) {
+    if (search.userId !== searcherId) {
       return res.sendStatus(403);
     }
 
@@ -228,7 +249,7 @@ router.put('/:id/decline', async (req, res) => {
 
 router.delete('/:id', async (req, res) => {
   const {
-    auth: { id: userId },
+    auth: { id: currentUserId },
     params: { id },
   } = req;
 
@@ -245,7 +266,7 @@ router.delete('/:id', async (req, res) => {
       return res.sendStatus(404);
     }
 
-    if (request.requesterId !== userId && request.recipientId !== userId) {
+    if (request.requesterId !== currentUserId && request.recipientId !== currentUserId) {
       return res.sendStatus(403);
     }
 

@@ -70,12 +70,12 @@ router.get('/me', async (req, res) => {
   try {
     const today = moment.utc().format('YYYY-MM-DD');
 
-    const search = await PartnerSearchModel.findOne({
+    const searches = await PartnerSearchModel.find({
       userId,
       date: { $gte: today },
-    });
+    }).sort({ date: -1 });
 
-    return res.json({ search: search ? search.toJSON() : null });
+    return res.json({ searches: searches.map((s) => s.toJSON()) });
   } catch (e) {
     console.log('Error fetching own partner search', e);
     return res.sendStatus(500);
@@ -95,15 +95,15 @@ router.post('/', async (req, res) => {
   }
 
   try {
-    const today = moment.utc().format('YYYY-MM-DD');
-    const existing = await PartnerSearchModel.findOne({
-      userId,
-      date: { $gte: today },
-    });
+    // const today = moment.utc().format('YYYY-MM-DD');
+    // const existing = await PartnerSearchModel.findOne({
+    //   userId,
+    //   date: { $gte: today },
+    // });
 
-    if (existing) {
-      return res.status(409).json({ error: 'search already exists' });
-    }
+    // if (existing) {
+    //   return res.status(409).json({ error: 'search already exists' });
+    // }
 
     const search = new PartnerSearchModel({
       userId,
