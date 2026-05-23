@@ -144,7 +144,7 @@ router.put('/:id/accept', async (req, res) => {
       return res.sendStatus(404);
     }
 
-    const { requesterId, searchId, status: requestStatus, _id: requestId } = request;
+    const { requesterId, searchId, _id: requestId } = request;
 
     const search = await PartnerSearchModel.findById(searchId);
 
