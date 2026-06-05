@@ -8,6 +8,7 @@ const PartnerRequestSchema = new mongoose.Schema(
     searchId: { type: String, required: true, index: true },
     requesterId: { type: String, required: true, index: true },
     recipientId: { type: String, required: true, index: true },
+    date: { type: String, required: true, index: true },
     status: { type: String, enum: PARTNER_REQUEST_STATUSES, default: 'pending', index: true },
   },
   { timestamps: true }
