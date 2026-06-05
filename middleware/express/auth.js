@@ -5,8 +5,6 @@ const getTokenFromHeaders = (req) => {
     headers: { authorization },
   } = req;
 
-  console.log('nitzan authorization', authorization);
-
   if (authorization && authorization.split(' ')[0] === 'Bearer') {
     return authorization.split(' ')[1];
   }
