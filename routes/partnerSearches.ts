@@ -2,44 +2,11 @@ import express from 'express';
 import mongoose from 'mongoose';
 import moment from 'moment';
 
-import PartnerSearchModel, { RIDE_ROLES, ERIDE_ROLE, TPartnerSearchStatus } from '../models/PartnerSearch.js';
+import PartnerSearchModel, { TPartnerSearchStatus } from '../models/PartnerSearch.js';
 import PartnerRequestModel from '../models/PartnerRequest.js';
+import { validateSearchInput } from '../utils/searchesUtils.js';
 
 const router = express.Router({ mergeParams: true });
-
-const HOUR_REGEX = /^(flexible|([01]\d|2[0-3]):[0-5]\d)$/;
-const DATE_REGEX = /^\d{4}-\d{2}-\d{2}$/;
-
-const validateSearchInput = (body) => {
-  const { cragIds, date, leaveHomeHour, leaveCragHour, rideRole, leaveFromAddress } = body;
-  const errors = {};
-
-  if (!Array.isArray(cragIds) || cragIds.length === 0) {
-    errors.cragIds = 'is required';
-  }
-
-  if (!date || !DATE_REGEX.test(date) || !moment.utc(date, 'YYYY-MM-DD', true).isValid()) {
-    errors.date = 'is invalid';
-  }
-
-  if (!rideRole || !RIDE_ROLES.includes(rideRole)) {
-    errors.rideRole = 'is invalid';
-  }
-
-  if (rideRole !== ERIDE_ROLE.SELF && (!leaveFromAddress || !leaveFromAddress.trim())) {
-    errors.leaveFromAddress = 'is required';
-  }
-
-  if (!leaveHomeHour || !HOUR_REGEX.test(leaveHomeHour)) {
-    errors.leaveHomeHour = 'is invalid';
-  }
-
-  if (!leaveCragHour || !HOUR_REGEX.test(leaveCragHour)) {
-    errors.leaveCragHour = 'is invalid';
-  }
-
-  return Object.keys(errors).length ? errors : null;
-};
 
 router.get('/', async (req, res) => {
   const {
@@ -95,16 +62,6 @@ router.post('/', async (req, res) => {
   }
 
   try {
-    // const today = moment.utc().format('YYYY-MM-DD');
-    // const existing = await PartnerSearchModel.findOne({
-    //   userId,
-    //   date: { $gte: today },
-    // });
-
-    // if (existing) {
-    //   return res.status(409).json({ error: 'search already exists' });
-    // }
-
     const search = new PartnerSearchModel({
       userId,
       cragIds: body.cragIds,
@@ -154,11 +111,6 @@ router.put('/:id', async (req, res) => {
     return res.sendStatus(404);
   }
 
-  const errors = validateSearchInput(body);
-  if (errors) {
-    return res.status(422).json({ errors });
-  }
-
   try {
     const search = await PartnerSearchModel.findById(id);
 
@@ -172,6 +124,11 @@ router.put('/:id', async (req, res) => {
 
     if (search.status === TPartnerSearchStatus.MATCHED) {
       return res.status(409).json({ error: 'cannot edit a matched search' });
+    }
+
+    const errors = validateSearchInput(body);
+    if (errors) {
+      return res.status(422).json({ errors });
     }
 
     search.cragIds = body.cragIds;
