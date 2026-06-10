@@ -6,7 +6,10 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "start": "nodemon --exec \"tsx -r dotenv/config\" server.js",
+    "start": "node --enable-source-maps -r dotenv/config dist/server.js",
+    "dev": "nodemon --exec \"tsx -r dotenv/config\" server.js",
+    "build": "tsup",
+    "typecheck": "tsc",
     "lint": "eslint \"**/*.{js,ts}\"",
     "format": "eslint \"**/*.{js,ts}\" --fix",
     "prettier": "prettier --write \"{,!(node_modules)/**/}*.{js,jsx,ts,tsx}\""
@@ -34,6 +37,7 @@
     "eslint-config-prettier": "^9.1.0",
     "globals": "^15.0.0",
     "prettier": "^3.3.2",
+    "tsup": "^8.5.1",
     "tsx": "^4.22.3",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.59.4"

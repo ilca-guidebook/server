@@ -2,9 +2,9 @@ import express from 'express';
 import mongoose from 'mongoose';
 import moment from 'moment';
 
-import PartnerSearchModel, { TPartnerSearchStatus } from '../models/PartnerSearch.js';
-import PartnerRequestModel from '../models/PartnerRequest.js';
-import { validateSearchInput } from '../utils/searchesUtils.js';
+import PartnerSearchModel, { TPartnerSearchStatus } from '../models/PartnerSearch';
+import PartnerRequestModel from '../models/PartnerRequest';
+import { validateSearchInput } from '../utils/searchesUtils';
 
 const router = express.Router({ mergeParams: true });
 

@@ -1,8 +1,8 @@
 import moment from 'moment';
 
-import PartnerSearchModel from '../models/PartnerSearch.js';
-import PartnerRequestModel from '../models/PartnerRequest.js';
-import { notifyRequestDeclined } from './notifications.ts';
+import PartnerSearchModel from '../models/PartnerSearch';
+import PartnerRequestModel from '../models/PartnerRequest';
+import { notifyRequestDeclined } from './notifications';
 import mongoose from 'mongoose';
 
 export const filterActiveRequests = async (requests) => {

@@ -1,14 +1,14 @@
 import express from 'express';
 import mongoose from 'mongoose';
 
-import PartnerRequestModel from '../models/PartnerRequest.js';
-import PartnerSearchModel, { TPartnerSearchStatus } from '../models/PartnerSearch.js';
-import { notifyRequestAccepted, notifyRequestDeclined, notifyRequestReceived } from '../utils/notifications.ts';
+import PartnerRequestModel from '../models/PartnerRequest';
+import PartnerSearchModel, { TPartnerSearchStatus } from '../models/PartnerSearch';
+import { notifyRequestAccepted, notifyRequestDeclined, notifyRequestReceived } from '../utils/notifications';
 import {
   filterActiveRequests,
   declinePendingRequestsOfSearch,
   deleteRecpientPendingRequestsOfDate,
-} from '../utils/requestsUtils.js';
+} from '../utils/requestsUtils';
 
 const router = express.Router({ mergeParams: true });
 

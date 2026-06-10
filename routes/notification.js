@@ -1,7 +1,7 @@
 import express from 'express';
 import { Expo } from 'expo-server-sdk';
 
-import UserModel from '../models/User.js';
+import UserModel from '../models/User';
 
 const router = express.Router();
 

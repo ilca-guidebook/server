@@ -1,7 +1,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
 
-import FavoriteModel from '../models/Favorites.js';
+import FavoriteModel from '../models/Favorites';
 
 const router = express.Router({ mergeParams: true });
 

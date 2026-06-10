@@ -3,17 +3,17 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import imageToBase64 from 'image-to-base64';
 
-import auth from './middleware/express/auth.js';
-import UserRoute from './routes/user.js';
-import UsersRoute from './routes/users.js';
-import ContentfulRoute from './routes/contentful.js';
-import NotificationRoute from './routes/notification.js';
-import RouteAscentRoute from './routes/routeAscent.js';
-import FavoritesRoute from './routes/favorites.js';
-import CragFavoritesRoute from './routes/cragFavorites.js';
-import PartnerRequestsRoute from './routes/partnerRequests.js';
-import PartnerSearchesRoute from './routes/partnerSearches.js';
-import { hasNewerVersion } from './utils/versionControl.js';
+import auth from './middleware/express/auth';
+import UserRoute from './routes/user';
+import UsersRoute from './routes/users';
+import ContentfulRoute from './routes/contentful';
+import NotificationRoute from './routes/notification';
+import RouteAscentRoute from './routes/routeAscent';
+import FavoritesRoute from './routes/favorites';
+import CragFavoritesRoute from './routes/cragFavorites';
+import PartnerRequestsRoute from './routes/partnerRequests';
+import PartnerSearchesRoute from './routes/partnerSearches';
+import { hasNewerVersion } from './utils/versionControl';
 
 // Constants
 const PORT = process.env.PORT || 3000;

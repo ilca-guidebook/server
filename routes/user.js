@@ -1,8 +1,8 @@
 import express from 'express';
 
-import UserModel from '../models/User.js';
-import { isUserPartOfILCA } from '../apis/loglig/index.js';
-import { encryptIdNumber } from '../utils/encryption.js';
+import UserModel from '../models/User';
+import { isUserPartOfILCA } from '../apis/loglig/index';
+import { encryptIdNumber } from '../utils/encryption';
 
 const router = express.Router();
 
