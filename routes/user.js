@@ -17,14 +17,19 @@ router.post('/login', async (req, res) => {
     });
   }
 
-  const testAccounts = JSON.parse(process.env.TEST_ACCOUNTS || '[]');
-  const isTestAccount = testAccounts.includes(idNumber);
+  try {
+    const testAccounts = JSON.parse(process.env.TEST_ACCOUNTS || '[]');
+    const isTestAccount = testAccounts.includes(idNumber);
 
-  if (!isTestAccount) {
-    const isIlcaMember = await isUserPartOfILCA(idNumber, dateOfBirth);
-    if (!isIlcaMember) {
-      return res.sendStatus(400);
+    if (!isTestAccount) {
+      const isIlcaMember = await isUserPartOfILCA(idNumber, dateOfBirth);
+      if (!isIlcaMember) {
+        return res.sendStatus(400);
+      }
     }
+  } catch (e) {
+    console.log('Error parsing TEST_ACCOUNTS', e);
+    return res.sendStatus(500);
   }
 
   try {
