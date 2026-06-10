@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-import { RIDE_ROLES, ERIDE_ROLE } from '../models/PartnerSearch.js';
+import { RIDE_ROLES, ERIDE_ROLE } from '../models/PartnerSearch';
 
 const HOUR_REGEX = /^(flexible|([01]\d|2[0-3]):[0-5]\d)$/;
 const DATE_REGEX = /^\d{4}-\d{2}-\d{2}$/;

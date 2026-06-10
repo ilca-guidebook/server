@@ -1,7 +1,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
 
-import CragFavoriteModel from '../models/CragFavorite.js';
+import CragFavoriteModel from '../models/CragFavorite';
 
 const router = express.Router({ mergeParams: true });
 

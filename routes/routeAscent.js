@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 import isNumber from 'lodash/isNumber.js';
 import moment from 'moment';
 
-import RouteAscentModel, { ASCENT_TYPES } from '../models/RouteAscent.js';
+import RouteAscentModel, { ASCENT_TYPES } from '../models/RouteAscent';
 
 const router = express.Router({ mergeParams: true });
 

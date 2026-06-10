@@ -1,7 +1,7 @@
 import { Expo } from 'expo-server-sdk';
 
-import UserModel from '../models/User.js';
-import NotificationTrackerModel, { type TNotificationType, ENotificationType } from '../models/NotificationTracker.ts';
+import UserModel from '../models/User';
+import NotificationTrackerModel, { type TNotificationType, ENotificationType } from '../models/NotificationTracker';
 
 const expo = new Expo({ useFcmV1: true });
 
